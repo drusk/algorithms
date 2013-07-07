@@ -39,43 +39,44 @@ public abstract class AbstractSortingTest {
 
 	@Test
 	public void emptyArray() {
-		assertArrayEquals(new int[] {}, undertest.sort(new int[] {}));
+		int[] array = new int[] {};
+		undertest.sort(array);
+		assertArrayEquals(new int[] {}, array);
 	}
 
 	@Test
 	public void oneElement() {
-		assertArrayEquals(new int[] { 1 }, undertest.sort(new int[] { 1 }));
+		int[] array = new int[] { 1 };
+		undertest.sort(array);
+		assertArrayEquals(new int[] { 1 }, array);
 	}
 
 	@Test
 	public void twoElements() {
-		assertArrayEquals(new int[] { 1, 2 },
-				undertest.sort(new int[] { 2, 1 }));
+		int[] array = new int[] { 2, 1 };
+		undertest.sort(array);
+		assertArrayEquals(new int[] { 1, 2 }, array);
 	}
 
 	@Test
 	public void evenNumberOfElements() {
-		assertArrayEquals(new int[] { 3, 5, 6, 7 },
-				undertest.sort(new int[] { 7, 3, 6, 5 }));
+		int[] array = new int[] { 7, 3, 6, 5 };
+		undertest.sort(array);
+		assertArrayEquals(new int[] { 3, 5, 6, 7 }, array);
 	}
 
 	@Test
 	public void oddNumberOfElements() {
-		assertArrayEquals(new int[] { 2, 8, 11, 17, 21 },
-				undertest.sort(new int[] { 11, 2, 8, 17, 21 }));
+		int[] array = new int[] { 11, 2, 8, 17, 21 };
+		undertest.sort(array);
+		assertArrayEquals(new int[] { 2, 8, 11, 17, 21 }, array);
 	}
 
 	@Test
 	public void alreadySorted() {
-		assertArrayEquals(new int[] { 1, 2, 3 },
-				undertest.sort(new int[] { 1, 2, 3 }));
-	}
-
-	@Test
-	public void originalUnaltered() {
-		int[] originalArray = new int[] { 3, 2, 1 };
-		assertArrayEquals(new int[] { 1, 2, 3 }, undertest.sort(originalArray));
-		assertArrayEquals(new int[] { 3, 2, 1 }, originalArray);
+		int[] array = new int[] { 1, 2, 3 };
+		undertest.sort(array);
+		assertArrayEquals(new int[] { 1, 2, 3 }, array);
 	}
 
 }

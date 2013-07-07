@@ -30,29 +30,22 @@ package rusk.david.algorithms.sorting;
 public class BubbleSort implements SortingAlgorithm {
 
 	@Override
-	public int[] sort(int[] array) {
-		// Don't modify the original input
-		int[] sortedArray = new int[array.length];
-		for (int i = 0; i < array.length; i++) {
-			sortedArray[i] = array[i];
-		}
-
+	public void sort(int[] array) {
 		int swaps;
 		int temp;
 
 		do {
 			swaps = 0;
-			for (int i = 0; i < sortedArray.length - 1; i++) {
-				if (sortedArray[i] > sortedArray[i + 1]) {
-					temp = sortedArray[i + 1];
-					sortedArray[i + 1] = sortedArray[i];
-					sortedArray[i] = temp;
+			for (int i = 0; i < array.length - 1; i++) {
+				if (array[i] > array[i + 1]) {
+					temp = array[i + 1];
+					array[i + 1] = array[i];
+					array[i] = temp;
 					swaps++;
 				}
 			}
 		} while (swaps > 0);
 
-		return sortedArray;
 	}
 
 }

@@ -24,26 +24,19 @@ package rusk.david.algorithms.sorting;
 public class SelectionSort implements SortingAlgorithm {
 
 	@Override
-	public int[] sort(int[] array) {
-		// Don't modify the input array
-		int[] sortedArray = new int[array.length];
-		for (int i = 0; i < array.length; i++) {
-			sortedArray[i] = array[i];
-		}
-
+	public void sort(int[] array) {
 		int temp;
 		int indexOfSmallestUnsorted;
 
-		for (int currentSortIndex = 0; currentSortIndex < sortedArray.length; currentSortIndex++) {
-			indexOfSmallestUnsorted = getIndexOfSmallest(sortedArray,
+		for (int currentSortIndex = 0; currentSortIndex < array.length; currentSortIndex++) {
+			indexOfSmallestUnsorted = getIndexOfSmallest(array,
 					currentSortIndex);
 
-			temp = sortedArray[currentSortIndex];
-			sortedArray[currentSortIndex] = sortedArray[indexOfSmallestUnsorted];
-			sortedArray[indexOfSmallestUnsorted] = temp;
+			temp = array[currentSortIndex];
+			array[currentSortIndex] = array[indexOfSmallestUnsorted];
+			array[indexOfSmallestUnsorted] = temp;
 		}
 
-		return sortedArray;
 	}
 
 	private int getIndexOfSmallest(int[] array, int startIndex) {

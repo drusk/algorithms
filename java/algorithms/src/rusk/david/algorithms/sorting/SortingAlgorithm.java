@@ -24,13 +24,11 @@ package rusk.david.algorithms.sorting;
 public interface SortingAlgorithm {
 
 	/**
-	 * Sorts an array of integers in ascending order.
+	 * Sorts an array of integers in ascending order. Sorting is done in-place.
 	 * 
 	 * @param array
-	 *            The array to be sorted. Note that this original array is left
-	 *            unaltered.
-	 * @return A new array in sorted, ascending order.
+	 *            The array to be sorted.
 	 */
-	int[] sort(int[] array);
+	void sort(int[] array);
 
 }
