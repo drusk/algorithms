@@ -21,62 +21,48 @@
  *****************************************************************************/
 package rusk.david.algorithms.sorting;
 
-import static org.junit.Assert.assertArrayEquals;
+public class ArrayUtils {
 
-import org.junit.Before;
-import org.junit.Test;
+	/**
+	 * Create a copy of a slice of an array.
+	 * 
+	 * @param array
+	 *            The array to be sliced.
+	 * @param startIndex
+	 *            The index of the first element to be sliced.
+	 * @param stopIndex
+	 *            The slice will stop when it reaches this index (not
+	 *            inclusive).
+	 * @return A new array containing containing the elements of the input array
+	 *         starting at startIndex and going up to but not including
+	 *         stopIndex.
+	 */
+	public static int[] copySlice(int[] array, int startIndex, int stopIndex) {
+		assert stopIndex > startIndex;
 
-public abstract class AbstractSortingTest {
+		int[] copiedArray = new int[stopIndex - startIndex];
+		for (int i = 0; startIndex + i < stopIndex; i++) {
+			copiedArray[i] = array[startIndex + i];
+		}
 
-	protected SortingAlgorithm undertest;
-
-	@Before
-	public void setUp() {
-		undertest = getSortingAlgorithm();
+		return copiedArray;
 	}
 
-	public abstract SortingAlgorithm getSortingAlgorithm();
+	/**
+	 * Copies the elements of one array into another. The arrays are expected to
+	 * have the same length.
+	 * 
+	 * @param targetArray
+	 *            The array which elements are being written into.
+	 * @param sourceArray
+	 *            The array which elements are read from.
+	 */
+	public static void copyInto(int[] targetArray, int[] sourceArray) {
+		assert targetArray.length == sourceArray.length;
 
-	@Test
-	public void emptyArray() {
-		int[] array = new int[] {};
-		undertest.sort(array);
-		assertArrayEquals(new int[] {}, array);
-	}
-
-	@Test
-	public void oneElement() {
-		int[] array = new int[] { 1 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 1 }, array);
-	}
-
-	@Test
-	public void twoElements() {
-		int[] array = new int[] { 2, 1 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 1, 2 }, array);
-	}
-
-	@Test
-	public void evenNumberOfElements() {
-		int[] array = new int[] { 7, 3, 6, 5 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 3, 5, 6, 7 }, array);
-	}
-
-	@Test
-	public void oddNumberOfElements() {
-		int[] array = new int[] { 11, 2, 8, 17, 21 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 2, 8, 11, 17, 21 }, array);
-	}
-
-	@Test
-	public void alreadySorted() {
-		int[] array = new int[] { 1, 2, 3 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 1, 2, 3 }, array);
+		for (int i = 0; i < sourceArray.length; i++) {
+			targetArray[i] = sourceArray[i];
+		}
 	}
 
 }

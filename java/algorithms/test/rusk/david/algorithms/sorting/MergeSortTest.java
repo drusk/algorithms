@@ -21,62 +21,11 @@
  *****************************************************************************/
 package rusk.david.algorithms.sorting;
 
-import static org.junit.Assert.assertArrayEquals;
+public class MergeSortTest extends AbstractSortingTest {
 
-import org.junit.Before;
-import org.junit.Test;
-
-public abstract class AbstractSortingTest {
-
-	protected SortingAlgorithm undertest;
-
-	@Before
-	public void setUp() {
-		undertest = getSortingAlgorithm();
-	}
-
-	public abstract SortingAlgorithm getSortingAlgorithm();
-
-	@Test
-	public void emptyArray() {
-		int[] array = new int[] {};
-		undertest.sort(array);
-		assertArrayEquals(new int[] {}, array);
-	}
-
-	@Test
-	public void oneElement() {
-		int[] array = new int[] { 1 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 1 }, array);
-	}
-
-	@Test
-	public void twoElements() {
-		int[] array = new int[] { 2, 1 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 1, 2 }, array);
-	}
-
-	@Test
-	public void evenNumberOfElements() {
-		int[] array = new int[] { 7, 3, 6, 5 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 3, 5, 6, 7 }, array);
-	}
-
-	@Test
-	public void oddNumberOfElements() {
-		int[] array = new int[] { 11, 2, 8, 17, 21 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 2, 8, 11, 17, 21 }, array);
-	}
-
-	@Test
-	public void alreadySorted() {
-		int[] array = new int[] { 1, 2, 3 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 1, 2, 3 }, array);
+	@Override
+	public SortingAlgorithm getSortingAlgorithm() {
+		return new MergeSort();
 	}
 
 }

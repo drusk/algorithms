@@ -23,60 +23,29 @@ package rusk.david.algorithms.sorting;
 
 import static org.junit.Assert.assertArrayEquals;
 
-import org.junit.Before;
 import org.junit.Test;
 
-public abstract class AbstractSortingTest {
-
-	protected SortingAlgorithm undertest;
-
-	@Before
-	public void setUp() {
-		undertest = getSortingAlgorithm();
-	}
-
-	public abstract SortingAlgorithm getSortingAlgorithm();
+public class ArrayUtilsTest {
 
 	@Test
-	public void emptyArray() {
-		int[] array = new int[] {};
-		undertest.sort(array);
-		assertArrayEquals(new int[] {}, array);
+	public void copySlice() {
+		int[] array = new int[] { 1, 2, 3, 4 };
+
+		int middle = array.length / 2;
+		assertArrayEquals(new int[] { 1, 2 },
+				ArrayUtils.copySlice(array, 0, middle));
+		assertArrayEquals(new int[] { 3, 4 },
+				ArrayUtils.copySlice(array, middle, array.length));
 	}
 
 	@Test
-	public void oneElement() {
-		int[] array = new int[] { 1 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 1 }, array);
-	}
+	public void copyInto() {
+		int[] source = new int[] { 1, 2, 3, 4 };
+		int[] target = new int[] { 0, 0, 0, 0 };
 
-	@Test
-	public void twoElements() {
-		int[] array = new int[] { 2, 1 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 1, 2 }, array);
-	}
+		ArrayUtils.copyInto(target, source);
 
-	@Test
-	public void evenNumberOfElements() {
-		int[] array = new int[] { 7, 3, 6, 5 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 3, 5, 6, 7 }, array);
-	}
-
-	@Test
-	public void oddNumberOfElements() {
-		int[] array = new int[] { 11, 2, 8, 17, 21 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 2, 8, 11, 17, 21 }, array);
-	}
-
-	@Test
-	public void alreadySorted() {
-		int[] array = new int[] { 1, 2, 3 };
-		undertest.sort(array);
-		assertArrayEquals(new int[] { 1, 2, 3 }, array);
+		assertArrayEquals(source, target);
 	}
 
 }
