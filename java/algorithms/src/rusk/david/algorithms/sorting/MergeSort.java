@@ -21,6 +21,8 @@
  *****************************************************************************/
 package rusk.david.algorithms.sorting;
 
+import rusk.david.algorithms.utils.ArrayUtils;
+
 public class MergeSort implements SortingAlgorithm {
 
 	@Override

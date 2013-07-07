@@ -19,7 +19,7 @@
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
  * IN THE SOFTWARE.
  *****************************************************************************/
-package rusk.david.algorithms.sorting;
+package rusk.david.algorithms.utils;
 
 import static org.junit.Assert.assertArrayEquals;
 
