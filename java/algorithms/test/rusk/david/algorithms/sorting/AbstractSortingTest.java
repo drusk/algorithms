@@ -71,4 +71,11 @@ public abstract class AbstractSortingTest {
 				undertest.sort(new int[] { 1, 2, 3 }));
 	}
 
+	@Test
+	public void originalUnaltered() {
+		int[] originalArray = new int[] { 3, 2, 1 };
+		assertArrayEquals(new int[] { 1, 2, 3 }, undertest.sort(originalArray));
+		assertArrayEquals(new int[] { 3, 2, 1 }, originalArray);
+	}
+
 }

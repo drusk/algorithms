@@ -21,16 +21,11 @@
  *****************************************************************************/
 package rusk.david.algorithms.sorting;
 
-public interface SortingAlgorithm {
+public class BubbleSortTest extends AbstractSortingTest {
 
-	/**
-	 * Sorts an array of integers in ascending order.
-	 * 
-	 * @param array
-	 *            The array to be sorted. Note that this original array is left
-	 *            unaltered.
-	 * @return A new array in sorted, ascending order.
-	 */
-	int[] sort(int[] array);
+	@Override
+	public SortingAlgorithm getSortingAlgorithm() {
+		return new BubbleSort();
+	}
 
 }

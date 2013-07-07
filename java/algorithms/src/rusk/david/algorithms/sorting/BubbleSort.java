@@ -21,16 +21,38 @@
  *****************************************************************************/
 package rusk.david.algorithms.sorting;
 
-public interface SortingAlgorithm {
+/**
+ * A classic sorting algorithm with O(n^2) runtime.
+ * 
+ * @author drusk
+ * 
+ */
+public class BubbleSort implements SortingAlgorithm {
 
-	/**
-	 * Sorts an array of integers in ascending order.
-	 * 
-	 * @param array
-	 *            The array to be sorted. Note that this original array is left
-	 *            unaltered.
-	 * @return A new array in sorted, ascending order.
-	 */
-	int[] sort(int[] array);
+	@Override
+	public int[] sort(int[] array) {
+		// Don't modify the original input
+		int[] sortedArray = new int[array.length];
+		for (int i = 0; i < array.length; i++) {
+			sortedArray[i] = array[i];
+		}
+
+		int swaps;
+		int temp;
+
+		do {
+			swaps = 0;
+			for (int i = 0; i < sortedArray.length - 1; i++) {
+				if (sortedArray[i] > sortedArray[i + 1]) {
+					temp = sortedArray[i + 1];
+					sortedArray[i + 1] = sortedArray[i];
+					sortedArray[i] = temp;
+					swaps++;
+				}
+			}
+		} while (swaps > 0);
+
+		return sortedArray;
+	}
 
 }
