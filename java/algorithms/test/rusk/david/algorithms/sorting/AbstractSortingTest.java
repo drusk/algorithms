@@ -79,4 +79,11 @@ public abstract class AbstractSortingTest {
 		assertArrayEquals(new int[] { 1, 2, 3 }, array);
 	}
 
+	@Test
+	public void duplicateItems() {
+		int[] array = new int[] { 4, 8, 5, 3, 5, 2 };
+		undertest.sort(array);
+		assertArrayEquals(new int[] { 2, 3, 4, 5, 5, 8 }, array);
+	}
+
 }
