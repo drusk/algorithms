@@ -86,4 +86,11 @@ public abstract class AbstractSortingTest {
 		assertArrayEquals(new int[] { 2, 3, 4, 5, 5, 8 }, array);
 	}
 
+	@Test
+	public void quickSortLectureExample() {
+		int[] array = new int[] { 3, 8, 2, 5, 1, 4, 7, 6 };
+		undertest.sort(array);
+		assertArrayEquals(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }, array);
+	}
+
 }
