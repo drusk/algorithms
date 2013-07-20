@@ -25,8 +25,11 @@ import rusk.david.algorithms.utils.ArrayUtils;
 
 public abstract class QuickSort implements SortingAlgorithm {
 
+	private int comparisonCount = 0;
+
 	@Override
 	public void sort(int[] array) {
+		comparisonCount = 0;
 		sort(array, 0, array.length - 1);
 	}
 
@@ -70,6 +73,7 @@ public abstract class QuickSort implements SortingAlgorithm {
 		int rightPartitionStartIndex = startIndex + 1;
 
 		for (int currentIndex = startIndex + 1; currentIndex <= endIndex; currentIndex++) {
+			comparisonCount++;
 			if (array[currentIndex] < pivotValue) {
 				swap(array, currentIndex, rightPartitionStartIndex);
 				rightPartitionStartIndex++;
@@ -97,5 +101,14 @@ public abstract class QuickSort implements SortingAlgorithm {
 	 * @return the index of the value to partition around.
 	 */
 	protected abstract int choosePivot(int[] array);
+
+	/**
+	 * 
+	 * @return the number of comparisons made in the last execution of the sort
+	 *         method.
+	 */
+	public int getComparisonCount() {
+		return comparisonCount;
+	}
 
 }
