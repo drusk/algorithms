@@ -30,25 +30,23 @@ import org.junit.Test;
 public class QuickSortTest {
 
 	public QuickSort getPivotFirstElementQuickSort() {
-		return new QuickSort() {
+		return new QuickSort(new PivotRule() {
 
 			@Override
-			protected int choosePivot(int[] array) {
+			public int choosePivot(int[] array) {
 				return 0;
 			}
-
-		};
+		});
 	}
 
 	public QuickSort getPivotLastElementQuickSort() {
-		return new QuickSort() {
+		return new QuickSort(new PivotRule() {
 
 			@Override
-			protected int choosePivot(int[] array) {
+			public int choosePivot(int[] array) {
 				return array.length - 1;
 			}
-
-		};
+		});
 	}
 
 	@Test

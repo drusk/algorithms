@@ -21,14 +21,16 @@
  *****************************************************************************/
 package rusk.david.algorithms.sorting;
 
-import java.util.Random;
+public interface PivotRule {
 
-public class RandomizedQuickSort extends QuickSort {
+	/**
+	 * Chooses the pivot around which to partition the array at each recursive
+	 * call.
+	 * 
+	 * @param array
+	 *            the current array, which are also the possible pivot values.
+	 * @return the index of the value to partition around.
+	 */
+	int choosePivot(int[] array);
 
-	private Random randomNumberGenerator = new Random();
-
-	@Override
-	protected int choosePivot(int[] array) {
-		return randomNumberGenerator.nextInt(array.length);
-	}
 }

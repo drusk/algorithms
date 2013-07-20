@@ -23,9 +23,15 @@ package rusk.david.algorithms.sorting;
 
 import rusk.david.algorithms.utils.ArrayUtils;
 
-public abstract class QuickSort implements SortingAlgorithm {
+public class QuickSort implements SortingAlgorithm {
+
+	private PivotRule pivotRule;
 
 	private int comparisonCount = 0;
+
+	public QuickSort(PivotRule pivotRule) {
+		this.pivotRule = pivotRule;
+	}
 
 	@Override
 	public void sort(int[] array) {
@@ -38,8 +44,8 @@ public abstract class QuickSort implements SortingAlgorithm {
 			return;
 		}
 
-		int pivotIndex = choosePivot(ArrayUtils.copySlice(array, startIndex,
-				endIndex + 1)) + startIndex;
+		int pivotIndex = pivotRule.choosePivot(ArrayUtils.copySlice(array,
+				startIndex, endIndex + 1)) + startIndex;
 
 		assert pivotIndex >= startIndex && pivotIndex <= endIndex;
 
@@ -91,16 +97,6 @@ public abstract class QuickSort implements SortingAlgorithm {
 		array[index1] = array[index2];
 		array[index2] = temp;
 	}
-
-	/**
-	 * Chooses the pivot around which to partition the array at each recursive
-	 * call.
-	 * 
-	 * @param array
-	 *            the current array, which are also the possible pivot values.
-	 * @return the index of the value to partition around.
-	 */
-	protected abstract int choosePivot(int[] array);
 
 	/**
 	 * 

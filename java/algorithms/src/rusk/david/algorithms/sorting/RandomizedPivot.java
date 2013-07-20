@@ -21,11 +21,15 @@
  *****************************************************************************/
 package rusk.david.algorithms.sorting;
 
-public class RandomizedQuickSortTest extends AbstractSortingTest {
+import java.util.Random;
+
+public class RandomizedPivot implements PivotRule {
+
+	private Random randomNumberGenerator = new Random();
 
 	@Override
-	public SortingAlgorithm getSortingAlgorithm() {
-		return new QuickSort(new RandomizedPivot());
+	public int choosePivot(int[] array) {
+		return randomNumberGenerator.nextInt(array.length);
 	}
 
 }
