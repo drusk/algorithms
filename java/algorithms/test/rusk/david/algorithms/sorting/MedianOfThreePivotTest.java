@@ -23,51 +23,33 @@ package rusk.david.algorithms.sorting;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
-
+import org.junit.Before;
 import org.junit.Test;
 
-public class QuickSortTest {
+public class MedianOfThreePivotTest {
 
-	public QuickSort getPivotFirstElementQuickSort() {
-		return new QuickSort(new PivotRule() {
+	private PivotRule undertest;
 
-			@Override
-			public int choosePivot(int[] array) {
-				return 0;
-			}
-		});
+	@Before
+	public void setUp() {
+		undertest = new MedianOfThreePivot();
 	}
 
-	public QuickSort getPivotLastElementQuickSort() {
-		return new QuickSort(new PivotRule() {
-
-			@Override
-			public int choosePivot(int[] array) {
-				return array.length - 1;
-			}
-		});
+	public void oddLength() {
+		int[] array = new int[] { 1, 2, 3, 4, 5 };
+		assertEquals(2, undertest.choosePivot(array));
 	}
 
 	@Test
-	public void countComparisions10Numbers() {
-		int[] array = new int[] { 3, 9, 8, 4, 6, 10, 2, 5, 7, 1 };
+	public void evenLength() {
+		int[] array = new int[] { 4, 5, 6, 7 };
+		assertEquals(1, undertest.choosePivot(array));
+	}
 
-		QuickSort pivotFirstQuickSort = getPivotFirstElementQuickSort();
-		pivotFirstQuickSort.sort(Arrays.copyOf(array, array.length));
-
-		assertEquals(25, pivotFirstQuickSort.getComparisonCount());
-
-		QuickSort pivotLastQuickSort = getPivotLastElementQuickSort();
-		pivotLastQuickSort.sort(Arrays.copyOf(array, array.length));
-
-		assertEquals(29, pivotLastQuickSort.getComparisonCount());
-
-		QuickSort pivotMediansQuickSort = new QuickSort(
-				new MedianOfThreePivot());
-		pivotMediansQuickSort.sort(Arrays.copyOf(array, array.length));
-
-		assertEquals(21, pivotMediansQuickSort.getComparisonCount());
+	@Test
+	public void unsortedOddLength() {
+		int[] array = new int[] { 8, 2, 4, 5, 7, 1 };
+		assertEquals(2, undertest.choosePivot(array));
 	}
 
 }

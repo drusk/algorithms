@@ -21,53 +21,45 @@
  *****************************************************************************/
 package rusk.david.algorithms.sorting;
 
-import static org.junit.Assert.assertEquals;
+public class MedianOfThreePivot implements PivotRule {
 
-import java.util.Arrays;
+	@Override
+	public int choosePivot(int[] array) {
+		int firstIndex = 0;
+		int middleIndex = getMiddleIndex(array);
+		int lastIndex = array.length - 1;
 
-import org.junit.Test;
+		int first = array[0];
+		int middle = array[middleIndex];
+		int last = array[array.length - 1];
 
-public class QuickSortTest {
-
-	public QuickSort getPivotFirstElementQuickSort() {
-		return new QuickSort(new PivotRule() {
-
-			@Override
-			public int choosePivot(int[] array) {
-				return 0;
+		if (first < middle && first < last) {
+			if (middle < last) {
+				return middleIndex;
+			} else {
+				return lastIndex;
 			}
-		});
-	}
-
-	public QuickSort getPivotLastElementQuickSort() {
-		return new QuickSort(new PivotRule() {
-
-			@Override
-			public int choosePivot(int[] array) {
-				return array.length - 1;
+		} else if (middle < first && middle < last) {
+			if (first < last) {
+				return firstIndex;
+			} else {
+				return lastIndex;
 			}
-		});
+		} else {
+			if (first < middle) {
+				return firstIndex;
+			} else {
+				return middleIndex;
+			}
+		}
 	}
 
-	@Test
-	public void countComparisions10Numbers() {
-		int[] array = new int[] { 3, 9, 8, 4, 6, 10, 2, 5, 7, 1 };
+	private int getMiddleIndex(int[] array) {
+		if (array.length % 2 == 0) {
+			return array.length / 2 - 1;
+		} else {
+			return (array.length - 1) / 2;
+		}
 
-		QuickSort pivotFirstQuickSort = getPivotFirstElementQuickSort();
-		pivotFirstQuickSort.sort(Arrays.copyOf(array, array.length));
-
-		assertEquals(25, pivotFirstQuickSort.getComparisonCount());
-
-		QuickSort pivotLastQuickSort = getPivotLastElementQuickSort();
-		pivotLastQuickSort.sort(Arrays.copyOf(array, array.length));
-
-		assertEquals(29, pivotLastQuickSort.getComparisonCount());
-
-		QuickSort pivotMediansQuickSort = new QuickSort(
-				new MedianOfThreePivot());
-		pivotMediansQuickSort.sort(Arrays.copyOf(array, array.length));
-
-		assertEquals(21, pivotMediansQuickSort.getComparisonCount());
 	}
-
 }
