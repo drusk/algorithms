@@ -31,7 +31,6 @@ public abstract class QuickSort implements SortingAlgorithm {
 	}
 
 	private void sort(int[] array, int startIndex, int endIndex) {
-		// If n = 1 return
 		if (endIndex - startIndex < 1) {
 			return;
 		}
@@ -44,7 +43,7 @@ public abstract class QuickSort implements SortingAlgorithm {
 		pivotIndex = partition(array, pivotIndex, startIndex, endIndex);
 
 		sort(array, startIndex, pivotIndex - 1);
-		sort(array, pivotIndex + 1, array.length - 1);
+		sort(array, pivotIndex + 1, endIndex);
 	}
 
 	/**
