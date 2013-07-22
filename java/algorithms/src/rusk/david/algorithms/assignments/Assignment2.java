@@ -36,7 +36,7 @@ import rusk.david.algorithms.utils.IOUtils;
 
 public class Assignment2 {
 
-	private static int[] get_input_array() throws IOException {
+	private static int[] getInputArray() throws IOException {
 		List<String> lines = IOUtils
 				.readLines("/home/drusk/Documents/Courses/online/algorithms1/assignments/a2/QuickSort.txt");
 
@@ -51,7 +51,7 @@ public class Assignment2 {
 	}
 
 	private static void sanityCheck() throws IOException {
-		int[] array1 = get_input_array();
+		int[] array1 = getInputArray();
 		int[] array2 = Arrays.copyOf(array1, array1.length);
 
 		MergeSort mergeSort = new MergeSort();
@@ -75,7 +75,7 @@ public class Assignment2 {
 			}
 		});
 
-		quickSort1.sort(get_input_array());
+		quickSort1.sort(getInputArray());
 		System.out.println("Comparisons when pivoting on first element: "
 				+ quickSort1.getComparisonCount());
 
@@ -88,13 +88,13 @@ public class Assignment2 {
 			}
 		});
 
-		quickSort2.sort(get_input_array());
+		quickSort2.sort(getInputArray());
 		System.out.println("Comparisons when pivoting on last element: "
 				+ quickSort2.getComparisonCount());
 
 		// Part 3
 		QuickSort quickSort3 = new QuickSort(new MedianOfThreePivot());
-		quickSort3.sort(get_input_array());
+		quickSort3.sort(getInputArray());
 		System.out.println("Comparisons when pivoting on median of three: "
 				+ quickSort3.getComparisonCount());
 
