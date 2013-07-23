@@ -25,15 +25,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class GraphTest {
-
-	private Node[] createNodes(int numberOfNodes) {
-		Node[] nodes = new Node[numberOfNodes];
-		for (int i = 0; i < numberOfNodes; i++) {
-			nodes[i] = new Node("" + i);
-		}
-		return nodes;
-	}
+public class GraphTest extends AbstractGraphTest {
 
 	@Test
 	public void basicGraphStats() {
@@ -47,4 +39,17 @@ public class GraphTest {
 		assertEquals(2, graph.getEdgeCount());
 	}
 
+	@Test
+	public void mergeNodesWithOneEdge() {
+		Node[] nodes = createNodes(3);
+
+		Graph graph = new Graph(nodes);
+		graph.addEdge(nodes[0], nodes[1]);
+		graph.addEdge(nodes[1], nodes[2]);
+
+		graph.mergeNodes(nodes[1], nodes[2]);
+
+		assertEquals(2, graph.getNodeCount());
+		assertEquals(1, graph.getEdgeCount());
+	}
 }

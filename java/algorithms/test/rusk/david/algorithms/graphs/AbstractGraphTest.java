@@ -21,23 +21,14 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
-public class Edge {
+public abstract class AbstractGraphTest {
 
-	private Node node1;
-
-	private Node node2;
-
-	public Edge(Node node1, Node node2) {
-		this.node1 = node1;
-		this.node2 = node2;
-	}
-
-	public Node getFirstNode() {
-		return node1;
-	}
-
-	public Node getSecondNode() {
-		return node2;
+	protected Node[] createNodes(int numberOfNodes) {
+		Node[] nodes = new Node[numberOfNodes];
+		for (int i = 0; i < numberOfNodes; i++) {
+			nodes[i] = new Node("" + i);
+		}
+		return nodes;
 	}
 
 }

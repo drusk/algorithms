@@ -21,35 +21,67 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class Graph {
 
-	private Set<Node> nodes;
-
-	private Set<Edge> edges;
+	private Map<Node, Set<Node>> nodeAdjacencies = new HashMap<Node, Set<Node>>();
 
 	public Graph(Node[] nodes) {
-		this(new HashSet<Node>(Arrays.asList(nodes)));
+		for (Node node : nodes) {
+			addNode(node);
+		}
 	}
 
-	public Graph(Set<Node> nodes) {
-		this.nodes = nodes;
-		this.edges = new HashSet<Edge>();
+	public void addNode(Node node) {
+		nodeAdjacencies.put(node, new HashSet<Node>());
 	}
 
 	public void addEdge(Node node1, Node node2) {
-		edges.add(new Edge(node1, node2));
+		nodeAdjacencies.get(node1).add(node2);
+		nodeAdjacencies.get(node2).add(node1);
 	}
 
 	public int getNodeCount() {
-		return nodes.size();
+		return nodeAdjacencies.size();
 	}
 
 	public int getEdgeCount() {
-		return edges.size();
+		int endCount = 0;
+		for (Set<Node> nodeSet : nodeAdjacencies.values()) {
+			endCount += nodeSet.size();
+		}
+		return endCount / 2;
+	}
+
+	public Set<Node> getNodes() {
+		return nodeAdjacencies.keySet();
+	}
+
+	public Set<Node> getConnectedNodes(Node node) {
+		return nodeAdjacencies.get(node);
+	}
+
+	public void mergeNodes(Node node1, Node node2) {
+		Node superNode = new Node(node1.getLabel() + "-" + node2.getLabel());
+		addNode(superNode);
+
+		Set<Node> connectedNodes = new HashSet<Node>();
+		connectedNodes.addAll(getConnectedNodes(node1));
+		connectedNodes.addAll(getConnectedNodes(node2));
+
+		connectedNodes.remove(node1);
+		connectedNodes.remove(node2);
+
+		for (Node connectedNode : connectedNodes) {
+			addEdge(superNode, connectedNode);
+		}
+
+		nodeAdjacencies.remove(node1);
+		nodeAdjacencies.remove(node2);
 	}
 
 }
