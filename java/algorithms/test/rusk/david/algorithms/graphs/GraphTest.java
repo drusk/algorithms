@@ -22,6 +22,8 @@
 package rusk.david.algorithms.graphs;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static org.junit.matchers.JUnitMatchers.hasItems;
 
 import org.junit.Test;
 
@@ -47,9 +49,49 @@ public class GraphTest extends AbstractGraphTest {
 		graph.addEdge(nodes[0], nodes[1]);
 		graph.addEdge(nodes[1], nodes[2]);
 
-		graph.mergeNodes(nodes[1], nodes[2]);
+		Node mergedNode = graph.mergeNodes(nodes[1], nodes[2]);
 
 		assertEquals(2, graph.getNodeCount());
 		assertEquals(1, graph.getEdgeCount());
+
+		assertThat(graph.getNodes(), hasItems(mergedNode, nodes[0]));
 	}
+
+	@Test
+	public void mergeNodesMultipleEdgesBetweenRemaining() {
+		Node[] nodes = createNodes(3);
+
+		Graph graph = new Graph(nodes);
+		graph.addEdge(nodes[0], nodes[1]);
+		graph.addEdge(nodes[1], nodes[2]);
+		graph.addEdge(nodes[2], nodes[0]);
+
+		Node mergedNode = graph.mergeNodes(nodes[1], nodes[2]);
+
+		assertEquals(2, graph.getNodeCount());
+		assertEquals(2, graph.getEdgeCount());
+
+		assertThat(graph.getNodes(), hasItems(mergedNode, nodes[0]));
+	}
+
+	@Test
+	public void mergeNodesHighlyCrossConnected() {
+		Node[] nodes = createNodes(4);
+
+		Graph graph = new Graph(nodes);
+		graph.addEdge(nodes[0], nodes[1]);
+		graph.addEdge(nodes[1], nodes[2]);
+		graph.addEdge(nodes[2], nodes[3]);
+		graph.addEdge(nodes[3], nodes[0]);
+		graph.addEdge(nodes[0], nodes[2]);
+		graph.addEdge(nodes[1], nodes[3]);
+
+		Node mergedNode = graph.mergeNodes(nodes[1], nodes[3]);
+
+		assertEquals(3, graph.getNodeCount());
+		assertEquals(5, graph.getEdgeCount());
+
+		assertThat(graph.getNodes(), hasItems(mergedNode, nodes[0], nodes[2]));
+	}
+
 }

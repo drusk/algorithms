@@ -21,14 +21,15 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class Graph {
 
-	private Map<Node, Set<Node>> nodeAdjacencies = new HashMap<Node, Set<Node>>();
+	private Map<Node, List<Node>> nodeAdjacencies = new HashMap<Node, List<Node>>();
 
 	public Graph(Node[] nodes) {
 		for (Node node : nodes) {
@@ -37,12 +38,16 @@ public class Graph {
 	}
 
 	public void addNode(Node node) {
-		nodeAdjacencies.put(node, new HashSet<Node>());
+		nodeAdjacencies.put(node, new ArrayList<Node>());
 	}
 
 	public void addEdge(Node node1, Node node2) {
 		nodeAdjacencies.get(node1).add(node2);
 		nodeAdjacencies.get(node2).add(node1);
+	}
+
+	public boolean hasEdge(Node node1, Node node2) {
+		return nodeAdjacencies.get(node1).contains(node2);
 	}
 
 	public int getNodeCount() {
@@ -51,8 +56,8 @@ public class Graph {
 
 	public int getEdgeCount() {
 		int endCount = 0;
-		for (Set<Node> nodeSet : nodeAdjacencies.values()) {
-			endCount += nodeSet.size();
+		for (List<Node> connectedNodes : nodeAdjacencies.values()) {
+			endCount += connectedNodes.size();
 		}
 		return endCount / 2;
 	}
@@ -61,27 +66,44 @@ public class Graph {
 		return nodeAdjacencies.keySet();
 	}
 
-	public Set<Node> getConnectedNodes(Node node) {
+	public List<Node> getConnectedNodes(Node node) {
 		return nodeAdjacencies.get(node);
 	}
 
-	public void mergeNodes(Node node1, Node node2) {
+	public Node mergeNodes(Node node1, Node node2) {
 		Node superNode = new Node(node1.getLabel() + "-" + node2.getLabel());
 		addNode(superNode);
 
-		Set<Node> connectedNodes = new HashSet<Node>();
-		connectedNodes.addAll(getConnectedNodes(node1));
-		connectedNodes.addAll(getConnectedNodes(node2));
+		// TODO refactor
+		List<Node> nodesConnectedToNode1 = copyConnectedNodes(node1);
+		List<Node> nodesConnectedToNode2 = copyConnectedNodes(node2);
 
-		connectedNodes.remove(node1);
-		connectedNodes.remove(node2);
-
-		for (Node connectedNode : connectedNodes) {
-			addEdge(superNode, connectedNode);
+		for (Node connectedNode : nodesConnectedToNode1) {
+			nodeAdjacencies.get(connectedNode).remove(node1);
+			addEdge(connectedNode, superNode);
 		}
+
+		for (Node connectedNode : nodesConnectedToNode2) {
+			nodeAdjacencies.get(connectedNode).remove(node2);
+			addEdge(connectedNode, superNode);
+		}
+
+		nodeAdjacencies.get(superNode).remove(node1);
+		nodeAdjacencies.get(superNode).remove(node2);
 
 		nodeAdjacencies.remove(node1);
 		nodeAdjacencies.remove(node2);
+
+		return superNode;
+	}
+
+	/*
+	 * Use to avoid concurrent modification errors.
+	 */
+	private List<Node> copyConnectedNodes(Node node) {
+		List<Node> connectedNodes = new ArrayList<Node>();
+		connectedNodes.addAll(getConnectedNodes(node));
+		return connectedNodes;
 	}
 
 }

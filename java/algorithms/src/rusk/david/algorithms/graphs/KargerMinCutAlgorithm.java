@@ -21,8 +21,8 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
+import java.util.Collection;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * A randomized algorithm to compute the minimum cut of a connected graph
@@ -73,7 +73,7 @@ public class KargerMinCutAlgorithm {
 		graph.mergeNodes(node1, node2);
 	}
 
-	private Node chooseRandom(Set<Node> nodes) {
+	private Node chooseRandom(Collection<Node> nodes) {
 		return (Node) nodes.toArray()[randomNumberGenerator.nextInt(nodes
 				.size())];
 	}
