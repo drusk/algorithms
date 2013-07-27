@@ -21,56 +21,15 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
+import java.util.Collection;
+import java.util.Random;
 
-/**
- * A randomized algorithm to compute the minimum cut of a connected graph
- * (http://en.wikipedia.org/wiki/Karger%27s_algorithm).
- * 
- * @author drusk
- * 
- */
-public class KargerMinCutAlgorithm {
+public class RandomNodeSelector {
 
-	private Graph graph;
+	private Random randomNumberGenerator = new Random();
 
-	private RandomNodeSelector randomNodeSelector;
-
-	/**
-	 * 
-	 * @param graph
-	 *            the graph to perform the min cut on.
-	 */
-	public KargerMinCutAlgorithm(Graph graph,
-			RandomNodeSelector randomNodeSelector) {
-		this.graph = graph;
-		this.randomNodeSelector = randomNodeSelector;
+	public Node selectNode(Collection<Node> nodes) {
+		return (Node) nodes.toArray()[randomNumberGenerator.nextInt(nodes
+				.size())];
 	}
-
-	/**
-	 * 
-	 * @return the minimum number of crossing edges when partitioning the graph
-	 *         in two.
-	 */
-	public int getMinCutSize() {
-		while (graph.getNodeCount() > 2) {
-			contractGraph();
-		}
-
-		return graph.getEdgeCount();
-	}
-
-	/**
-	 * Picks a remaining edge and merges the attached nodes.
-	 */
-	private void contractGraph() {
-		/*
-		 * Randomly choose two connected nodes to merge (i.e. an edge to
-		 * contract).
-		 */
-		Node node1 = randomNodeSelector.selectNode(graph.getNodes());
-		Node node2 = randomNodeSelector.selectNode(node1.getConnectedNodes());
-
-		graph.mergeNodes(node1, node2);
-	}
-
 }
