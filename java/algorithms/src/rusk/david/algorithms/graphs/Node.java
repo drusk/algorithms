@@ -21,9 +21,14 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Node {
 
 	private String label;
+
+	private List<Node> connectedNodes = new ArrayList<Node>();
 
 	public Node(String label) {
 		this.label = label;
@@ -31,6 +36,56 @@ public class Node {
 
 	public String getLabel() {
 		return label;
+	}
+
+	/**
+	 * Adds a connection from this node to another. Note: self edges are not
+	 * allowed, so adding a connection to this node will be skipped. However,
+	 * the same nodes can have multiple edges between each other.
+	 * 
+	 * @param otherNode
+	 *            The node this node is connected to.
+	 */
+	public void addConnectedNode(Node otherNode) {
+		if (otherNode.equals(this)) {
+			return;
+		}
+
+		connectedNodes.add(otherNode);
+	}
+
+	public void addConnectedNodes(List<Node> otherNodes) {
+		for (Node node : otherNodes) {
+			addConnectedNode(node);
+		}
+	}
+
+	/**
+	 * Removes this node's connections to another node.
+	 * 
+	 * @param otherNode
+	 *            The node to disconnect from.
+	 * @return the number of connections removed
+	 */
+	public int removeAllConnectionsTo(Node otherNode) {
+		int removed = 0;
+		while (connectedNodes.contains(otherNode)) {
+			connectedNodes.remove(otherNode);
+			removed++;
+		}
+		return removed;
+	}
+
+	public List<Node> getConnectedNodes() {
+		return connectedNodes;
+	}
+
+	public int getEdgeCount() {
+		return connectedNodes.size();
+	}
+
+	public boolean isConnectedTo(Node otherNode) {
+		return connectedNodes.contains(otherNode);
 	}
 
 	public String toString() {

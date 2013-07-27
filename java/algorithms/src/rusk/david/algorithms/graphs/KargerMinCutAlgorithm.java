@@ -68,7 +68,7 @@ public class KargerMinCutAlgorithm {
 		 * contract).
 		 */
 		Node node1 = chooseRandom(graph.getNodes());
-		Node node2 = chooseRandom(graph.getConnectedNodes(node1));
+		Node node2 = chooseRandom(node1.getConnectedNodes());
 
 		graph.mergeNodes(node1, node2);
 	}
