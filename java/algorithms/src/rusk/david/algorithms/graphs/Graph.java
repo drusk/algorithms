@@ -21,6 +21,7 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +33,10 @@ public class Graph {
 		for (Node node : nodes) {
 			addNode(node);
 		}
+	}
+
+	public Graph(Collection<Node> nodes) {
+		this(nodes.toArray(new Node[nodes.size()]));
 	}
 
 	public void addNode(Node node) {

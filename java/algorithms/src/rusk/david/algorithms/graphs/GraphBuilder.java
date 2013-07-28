@@ -21,25 +21,48 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
-import static org.junit.Assert.assertEquals;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.junit.Test;
+import rusk.david.algorithms.utils.IOUtils;
 
-public class KargerMinCutAlgorithmTest extends AbstractGraphTest {
+public class GraphBuilder {
 
-	private KargerMinCutAlgorithm underTest;
+	private Map<String, Node> nodesByLabel;
 
-	@Test
-	public void mergeNodesWithOneEdge() {
-		Node[] nodes = createNodes(3);
+	public Graph buildFromAdjacencyLists(String path) throws IOException {
+		nodesByLabel = new HashMap<String, Node>();
 
-		Graph graph = new Graph(nodes);
-		graph.addEdge(nodes[0], nodes[1]);
-		graph.addEdge(nodes[1], nodes[2]);
+		for (String line : IOUtils.readLines(path)) {
+			parseNodeAndConnections(line);
+		}
 
-		underTest = new KargerMinCutAlgorithm(graph, new RandomNodeSelector());
+		return new Graph(nodesByLabel.values());
+	}
 
-		assertEquals(1, underTest.getMinCutSize());
+	private void parseNodeAndConnections(String line) {
+		String[] nodeLabels = line.split("\\s+");
+
+		assert nodeLabels.length >= 1;
+
+		Node currentNode = getOrMakeNode(nodeLabels[0]);
+
+		for (int i = 1; i < nodeLabels.length; i++) {
+			Node connectedNode = getOrMakeNode(nodeLabels[i]);
+			currentNode.addConnectedNode(connectedNode);
+		}
+	}
+
+	private Node getOrMakeNode(String label) {
+		if (nodesByLabel.containsKey(label)) {
+			return nodesByLabel.get(label);
+		}
+
+		Node newNode = new Node(label);
+		nodesByLabel.put(label, newNode);
+
+		return newNode;
 	}
 
 }
