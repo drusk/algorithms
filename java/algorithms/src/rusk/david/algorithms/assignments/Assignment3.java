@@ -23,7 +23,7 @@ package rusk.david.algorithms.assignments;
 
 import java.io.IOException;
 
-import rusk.david.algorithms.graphs.Graph;
+import rusk.david.algorithms.graphs.UndirectedGraph;
 import rusk.david.algorithms.graphs.GraphBuilder;
 import rusk.david.algorithms.graphs.KargerMinCutAlgorithm;
 import rusk.david.algorithms.graphs.RandomNodeSelector;
@@ -50,7 +50,7 @@ public class Assignment3 {
 	}
 
 	private static int getCutSize(String inputFile) throws IOException {
-		Graph graph = new GraphBuilder().buildFromAdjacencyLists(inputFile);
+		UndirectedGraph graph = new GraphBuilder().buildFromAdjacencyLists(inputFile);
 
 		KargerMinCutAlgorithm kargerAlgorithm = new KargerMinCutAlgorithm(
 				graph, new RandomNodeSelector());

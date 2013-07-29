@@ -25,17 +25,23 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Graph {
+/**
+ * A graph structure where edges are undirected. Parallel edges are allowed.
+ * 
+ * @author drusk
+ * 
+ */
+public class UndirectedGraph {
 
 	private Set<Node> nodes = new HashSet<Node>();
 
-	public Graph(Node[] nodes) {
+	public UndirectedGraph(Node[] nodes) {
 		for (Node node : nodes) {
 			addNode(node);
 		}
 	}
 
-	public Graph(Collection<Node> nodes) {
+	public UndirectedGraph(Collection<Node> nodes) {
 		this(nodes.toArray(new Node[nodes.size()]));
 	}
 

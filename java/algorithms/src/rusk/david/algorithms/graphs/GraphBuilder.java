@@ -31,14 +31,14 @@ public class GraphBuilder {
 
 	private Map<String, Node> nodesByLabel;
 
-	public Graph buildFromAdjacencyLists(String path) throws IOException {
+	public UndirectedGraph buildFromAdjacencyLists(String path) throws IOException {
 		nodesByLabel = new HashMap<String, Node>();
 
 		for (String line : IOUtils.readLines(path)) {
 			parseNodeAndConnections(line);
 		}
 
-		return new Graph(nodesByLabel.values());
+		return new UndirectedGraph(nodesByLabel.values());
 	}
 
 	private void parseNodeAndConnections(String line) {

@@ -35,7 +35,7 @@ public class GraphTest extends AbstractGraphTest {
 	public void basicGraphProperties() {
 		Node[] nodes = createNodes(3);
 
-		Graph graph = new Graph(nodes);
+		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
 		graph.addEdge(nodes[1], nodes[2]);
 
@@ -54,7 +54,7 @@ public class GraphTest extends AbstractGraphTest {
 	public void mergeNodesWithOneEdge() {
 		Node[] nodes = createNodes(3);
 
-		Graph graph = new Graph(nodes);
+		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
 		graph.addEdge(nodes[1], nodes[2]);
 
@@ -71,7 +71,7 @@ public class GraphTest extends AbstractGraphTest {
 	public void mergeNodesMultipleEdgesBetweenRemaining() {
 		Node[] nodes = createNodes(3);
 
-		Graph graph = new Graph(nodes);
+		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
 		graph.addEdge(nodes[1], nodes[2]);
 		graph.addEdge(nodes[2], nodes[0]);
@@ -89,7 +89,7 @@ public class GraphTest extends AbstractGraphTest {
 	public void mergeNodesHighlyCrossConnected() {
 		Node[] nodes = createNodes(4);
 
-		Graph graph = new Graph(nodes);
+		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
 		graph.addEdge(nodes[1], nodes[2]);
 		graph.addEdge(nodes[2], nodes[3]);
@@ -112,7 +112,7 @@ public class GraphTest extends AbstractGraphTest {
 	public void mergeNodesWithMultipleEdgesToTheSameNode() {
 		Node[] nodes = createNodes(3);
 
-		Graph graph = new Graph(nodes);
+		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
 		graph.addEdge(nodes[0], nodes[1]);
 		graph.addEdge(nodes[1], nodes[2]);

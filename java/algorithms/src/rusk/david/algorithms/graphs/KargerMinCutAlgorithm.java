@@ -31,7 +31,7 @@ package rusk.david.algorithms.graphs;
  */
 public class KargerMinCutAlgorithm {
 
-	private Graph graph;
+	private UndirectedGraph graph;
 
 	private RandomNodeSelector randomNodeSelector;
 
@@ -40,7 +40,7 @@ public class KargerMinCutAlgorithm {
 	 * @param graph
 	 *            the graph to perform the min cut on.
 	 */
-	public KargerMinCutAlgorithm(Graph graph,
+	public KargerMinCutAlgorithm(UndirectedGraph graph,
 			RandomNodeSelector randomNodeSelector) {
 		this.graph = graph;
 		this.randomNodeSelector = randomNodeSelector;

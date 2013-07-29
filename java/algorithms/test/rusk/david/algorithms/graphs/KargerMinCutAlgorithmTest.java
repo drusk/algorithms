@@ -33,7 +33,7 @@ public class KargerMinCutAlgorithmTest extends AbstractGraphTest {
 	public void mergeNodesWithOneEdge() {
 		Node[] nodes = createNodes(3);
 
-		Graph graph = new Graph(nodes);
+		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
 		graph.addEdge(nodes[1], nodes[2]);
 
