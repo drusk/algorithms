@@ -24,6 +24,12 @@ package rusk.david.algorithms.graphs;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * TODO: refactor this for use with either directed or undirected graphs.
+ * 
+ * @author drusk
+ * 
+ */
 public class Node {
 
 	private String label;
