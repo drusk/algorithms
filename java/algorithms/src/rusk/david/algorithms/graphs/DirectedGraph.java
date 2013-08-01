@@ -54,6 +54,10 @@ public class DirectedGraph {
 		targetNode.addIncomingEdge(edge);
 	}
 
+	public boolean hasEdge(Node sourceNode, Node targetNode) {
+		return sourceNode.getAdjacentNodes().contains(targetNode);
+	}
+
 	public Set<Node> getNodes() {
 		return nodes;
 	}
@@ -63,7 +67,9 @@ public class DirectedGraph {
 	}
 
 	public void reverse() {
-
+		for (Edge edge : edges) {
+			edge.reverse();
+		}
 	}
 
 }

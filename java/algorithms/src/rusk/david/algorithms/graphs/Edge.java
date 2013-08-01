@@ -51,6 +51,12 @@ public class Edge {
 	}
 
 	public void reverse() {
+		sourceNode.removeOutgoingEdge(this);
+		sourceNode.addIncomingEdge(this);
+
+		targetNode.removeIncomingEdge(this);
+		targetNode.addOutgoingEdge(this);
+
 		Node temp = sourceNode;
 		sourceNode = targetNode;
 		targetNode = temp;

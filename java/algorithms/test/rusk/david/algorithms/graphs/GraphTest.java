@@ -128,4 +128,27 @@ public class GraphTest extends AbstractGraphTest {
 		assertTrue(nodes[2].isConnectedTo(mergedNode));
 	}
 
+	@Test
+	public void reverseLinearPath() {
+		Node nodes[] = createNodes(3);
+
+		DirectedGraph graph = new DirectedGraph(nodes);
+		graph.addEdge(nodes[0], nodes[1]);
+		graph.addEdge(nodes[1], nodes[2]);
+
+		assertTrue(graph.hasEdge(nodes[0], nodes[1]));
+		assertTrue(graph.hasEdge(nodes[1], nodes[2]));
+
+		assertFalse(graph.hasEdge(nodes[1], nodes[0]));
+		assertFalse(graph.hasEdge(nodes[2], nodes[1]));
+
+		graph.reverse();
+
+		assertTrue(graph.hasEdge(nodes[1], nodes[0]));
+		assertTrue(graph.hasEdge(nodes[2], nodes[1]));
+
+		assertFalse(graph.hasEdge(nodes[0], nodes[1]));
+		assertFalse(graph.hasEdge(nodes[1], nodes[2]));
+	}
+
 }

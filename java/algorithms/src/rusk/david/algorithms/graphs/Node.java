@@ -54,8 +54,16 @@ public class Node {
 		incomingEdges.add(edge);
 	}
 
+	public void removeIncomingEdge(Edge edge) {
+		incomingEdges.remove(edge);
+	}
+
 	public void addOutgoingEdge(Edge edge) {
 		outgoingEdges.add(edge);
+	}
+
+	public void removeOutgoingEdge(Edge edge) {
+		outgoingEdges.remove(edge);
 	}
 
 	public List<Node> getAdjacentNodes() {
