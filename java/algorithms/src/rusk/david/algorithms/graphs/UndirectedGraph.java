@@ -33,23 +33,23 @@ import java.util.Set;
  */
 public class UndirectedGraph {
 
-	private Set<Node> nodes = new HashSet<Node>();
+	private Set<UndirectedNode> nodes = new HashSet<UndirectedNode>();
 
-	public UndirectedGraph(Node[] nodes) {
-		for (Node node : nodes) {
+	public UndirectedGraph(UndirectedNode[] nodes) {
+		for (UndirectedNode node : nodes) {
 			addNode(node);
 		}
 	}
 
-	public UndirectedGraph(Collection<Node> nodes) {
-		this(nodes.toArray(new Node[nodes.size()]));
+	public UndirectedGraph(Collection<UndirectedNode> nodes) {
+		this(nodes.toArray(new UndirectedNode[nodes.size()]));
 	}
 
-	public void addNode(Node node) {
+	public void addNode(UndirectedNode node) {
 		nodes.add(node);
 	}
 
-	public void addEdge(Node node1, Node node2) {
+	public void addEdge(UndirectedNode node1, UndirectedNode node2) {
 		node1.addConnectedNode(node2);
 		node2.addConnectedNode(node1);
 	}
@@ -60,21 +60,21 @@ public class UndirectedGraph {
 
 	public int getEdgeCount() {
 		int endCount = 0;
-		for (Node node : nodes) {
+		for (UndirectedNode node : nodes) {
 			endCount += node.getEdgeCount();
 		}
 		return endCount / 2;
 	}
 
-	public Set<Node> getNodes() {
+	public Set<UndirectedNode> getNodes() {
 		return nodes;
 	}
 
-	public Node mergeNodes(Node node1, Node node2) {
+	public UndirectedNode mergeNodes(UndirectedNode node1, UndirectedNode node2) {
 		nodes.remove(node1);
 		nodes.remove(node2);
 
-		Node superNode = new Node(node1.getLabel() + "-" + node2.getLabel());
+		UndirectedNode superNode = new UndirectedNode(node1.getLabel() + "-" + node2.getLabel());
 
 		superNode.addConnectedNodes(node1.getConnectedNodes());
 		superNode.addConnectedNodes(node2.getConnectedNodes());
@@ -90,8 +90,8 @@ public class UndirectedGraph {
 		return superNode;
 	}
 
-	private void replaceNodeInEdges(Node originalNode, Node newNode) {
-		for (Node connectedNode : originalNode.getConnectedNodes()) {
+	private void replaceNodeInEdges(UndirectedNode originalNode, UndirectedNode newNode) {
+		for (UndirectedNode connectedNode : originalNode.getConnectedNodes()) {
 			int connections = connectedNode
 					.removeAllConnectionsTo(originalNode);
 			for (int i = 0; i < connections; i++) {

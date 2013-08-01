@@ -37,6 +37,8 @@ public class DirectedGraph {
 
 	private Map<Node, List<Node>> nodeAdjacencies = new HashMap<Node, List<Node>>();
 
+	private List<Edge> edges = new ArrayList<Edge>();
+
 	public DirectedGraph(Node[] nodes) {
 		for (Node node : nodes) {
 			addNode(node);
@@ -49,7 +51,6 @@ public class DirectedGraph {
 
 	public void addEdge(Node node1, Node node2) {
 		nodeAdjacencies.get(node1).add(node2);
-		node2.addConnectedNode(node1);
 	}
 
 	public Set<Node> getNodes() {
@@ -58,6 +59,10 @@ public class DirectedGraph {
 
 	public List<Node> getConnectedNodes(Node node) {
 		return nodeAdjacencies.get(node);
+	}
+
+	public void reverse() {
+
 	}
 
 }

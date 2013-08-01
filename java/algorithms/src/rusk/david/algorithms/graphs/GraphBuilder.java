@@ -29,10 +29,10 @@ import rusk.david.algorithms.utils.IOUtils;
 
 public class GraphBuilder {
 
-	private Map<String, Node> nodesByLabel;
+	private Map<String, UndirectedNode> nodesByLabel;
 
 	public UndirectedGraph buildFromAdjacencyLists(String path) throws IOException {
-		nodesByLabel = new HashMap<String, Node>();
+		nodesByLabel = new HashMap<String, UndirectedNode>();
 
 		for (String line : IOUtils.readLines(path)) {
 			parseNodeAndConnections(line);
@@ -46,20 +46,20 @@ public class GraphBuilder {
 
 		assert nodeLabels.length >= 1;
 
-		Node currentNode = getOrMakeNode(nodeLabels[0]);
+		UndirectedNode currentNode = getOrMakeNode(nodeLabels[0]);
 
 		for (int i = 1; i < nodeLabels.length; i++) {
-			Node connectedNode = getOrMakeNode(nodeLabels[i]);
+			UndirectedNode connectedNode = getOrMakeNode(nodeLabels[i]);
 			currentNode.addConnectedNode(connectedNode);
 		}
 	}
 
-	private Node getOrMakeNode(String label) {
+	private UndirectedNode getOrMakeNode(String label) {
 		if (nodesByLabel.containsKey(label)) {
 			return nodesByLabel.get(label);
 		}
 
-		Node newNode = new Node(label);
+		UndirectedNode newNode = new UndirectedNode(label);
 		nodesByLabel.put(label, newNode);
 
 		return newNode;

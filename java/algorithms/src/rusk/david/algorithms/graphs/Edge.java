@@ -21,15 +21,28 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
-import java.util.Collection;
-import java.util.Random;
+public class Edge {
 
-public class RandomNodeSelector {
+	private UndirectedNode sourceNode;
 
-	private Random randomNumberGenerator = new Random();
+	private UndirectedNode targetNode;
 
-	public UndirectedNode selectNode(Collection<UndirectedNode> nodes) {
-		return (UndirectedNode) nodes.toArray()[randomNumberGenerator.nextInt(nodes
-				.size())];
+	private boolean directed;
+
+	public Edge(UndirectedNode sourceNode, UndirectedNode targetNode, boolean directed) {
+		this.sourceNode = sourceNode;
+		this.targetNode = targetNode;
+		this.directed = directed;
 	}
+
+	public boolean isDirected() {
+		return directed;
+	}
+
+	public void reverse() {
+		UndirectedNode temp = sourceNode;
+		sourceNode = targetNode;
+		targetNode = temp;
+	}
+
 }

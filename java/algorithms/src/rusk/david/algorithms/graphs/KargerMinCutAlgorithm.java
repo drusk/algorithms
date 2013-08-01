@@ -67,8 +67,8 @@ public class KargerMinCutAlgorithm {
 		 * Randomly choose two connected nodes to merge (i.e. an edge to
 		 * contract).
 		 */
-		Node node1 = randomNodeSelector.selectNode(graph.getNodes());
-		Node node2 = randomNodeSelector.selectNode(node1.getConnectedNodes());
+		UndirectedNode node1 = randomNodeSelector.selectNode(graph.getNodes());
+		UndirectedNode node2 = randomNodeSelector.selectNode(node1.getConnectedNodes());
 
 		graph.mergeNodes(node1, node2);
 	}

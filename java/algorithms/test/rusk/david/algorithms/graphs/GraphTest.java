@@ -33,7 +33,7 @@ public class GraphTest extends AbstractGraphTest {
 
 	@Test
 	public void basicGraphProperties() {
-		Node[] nodes = createNodes(3);
+		UndirectedNode[] nodes = createUndirectedNodes(3);
 
 		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
@@ -52,13 +52,13 @@ public class GraphTest extends AbstractGraphTest {
 
 	@Test
 	public void mergeNodesWithOneEdge() {
-		Node[] nodes = createNodes(3);
+		UndirectedNode[] nodes = createUndirectedNodes(3);
 
 		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
 		graph.addEdge(nodes[1], nodes[2]);
 
-		Node mergedNode = graph.mergeNodes(nodes[1], nodes[2]);
+		UndirectedNode mergedNode = graph.mergeNodes(nodes[1], nodes[2]);
 
 		assertEquals(2, graph.getNodeCount());
 		assertEquals(1, graph.getEdgeCount());
@@ -69,14 +69,14 @@ public class GraphTest extends AbstractGraphTest {
 
 	@Test
 	public void mergeNodesMultipleEdgesBetweenRemaining() {
-		Node[] nodes = createNodes(3);
+		UndirectedNode[] nodes = createUndirectedNodes(3);
 
 		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
 		graph.addEdge(nodes[1], nodes[2]);
 		graph.addEdge(nodes[2], nodes[0]);
 
-		Node mergedNode = graph.mergeNodes(nodes[1], nodes[2]);
+		UndirectedNode mergedNode = graph.mergeNodes(nodes[1], nodes[2]);
 
 		assertEquals(2, graph.getNodeCount());
 		assertEquals(2, graph.getEdgeCount());
@@ -87,7 +87,7 @@ public class GraphTest extends AbstractGraphTest {
 
 	@Test
 	public void mergeNodesHighlyCrossConnected() {
-		Node[] nodes = createNodes(4);
+		UndirectedNode[] nodes = createUndirectedNodes(4);
 
 		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
@@ -97,7 +97,7 @@ public class GraphTest extends AbstractGraphTest {
 		graph.addEdge(nodes[0], nodes[2]);
 		graph.addEdge(nodes[1], nodes[3]);
 
-		Node mergedNode = graph.mergeNodes(nodes[1], nodes[3]);
+		UndirectedNode mergedNode = graph.mergeNodes(nodes[1], nodes[3]);
 
 		assertEquals(3, graph.getNodeCount());
 		assertEquals(5, graph.getEdgeCount());
@@ -110,7 +110,7 @@ public class GraphTest extends AbstractGraphTest {
 
 	@Test
 	public void mergeNodesWithMultipleEdgesToTheSameNode() {
-		Node[] nodes = createNodes(3);
+		UndirectedNode[] nodes = createUndirectedNodes(3);
 
 		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
@@ -118,7 +118,7 @@ public class GraphTest extends AbstractGraphTest {
 		graph.addEdge(nodes[1], nodes[2]);
 		graph.addEdge(nodes[1], nodes[2]);
 
-		Node mergedNode = graph.mergeNodes(nodes[0], nodes[1]);
+		UndirectedNode mergedNode = graph.mergeNodes(nodes[0], nodes[1]);
 
 		assertEquals(2, graph.getNodeCount());
 		assertEquals(2, graph.getEdgeCount());
