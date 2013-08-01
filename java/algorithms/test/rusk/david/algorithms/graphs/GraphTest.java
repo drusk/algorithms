@@ -142,13 +142,13 @@ public class GraphTest extends AbstractGraphTest {
 		assertFalse(graph.hasEdge(nodes[1], nodes[0]));
 		assertFalse(graph.hasEdge(nodes[2], nodes[1]));
 
-		graph.reverse();
+		DirectedGraph reversedGraph = graph.reversed();
 
-		assertTrue(graph.hasEdge(nodes[1], nodes[0]));
-		assertTrue(graph.hasEdge(nodes[2], nodes[1]));
+		assertTrue(reversedGraph.hasEdge(nodes[1], nodes[0]));
+		assertTrue(reversedGraph.hasEdge(nodes[2], nodes[1]));
 
-		assertFalse(graph.hasEdge(nodes[0], nodes[1]));
-		assertFalse(graph.hasEdge(nodes[1], nodes[2]));
+		assertFalse(reversedGraph.hasEdge(nodes[0], nodes[1]));
+		assertFalse(reversedGraph.hasEdge(nodes[1], nodes[2]));
 	}
 
 }

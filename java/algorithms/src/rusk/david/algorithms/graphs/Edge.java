@@ -35,6 +35,14 @@ public class Edge {
 		this.directed = directed;
 	}
 
+	public Node getTargetNode() {
+		return targetNode;
+	}
+
+	public Node getSourceNode() {
+		return sourceNode;
+	}
+
 	public boolean isDirected() {
 		return directed;
 	}
@@ -48,18 +56,6 @@ public class Edge {
 			throw new RuntimeException("Node (" + node.toString()
 					+ ") is not part of edge (" + toString() + ")");
 		}
-	}
-
-	public void reverse() {
-		sourceNode.removeOutgoingEdge(this);
-		sourceNode.addIncomingEdge(this);
-
-		targetNode.removeIncomingEdge(this);
-		targetNode.addOutgoingEdge(this);
-
-		Node temp = sourceNode;
-		sourceNode = targetNode;
-		targetNode = temp;
 	}
 
 	@Override

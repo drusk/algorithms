@@ -21,8 +21,12 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -37,25 +41,37 @@ public class DirectedGraph {
 
 	private Set<Edge> edges = new HashSet<Edge>();
 
+	private Map<Node, List<Edge>> incomingEdgesByNode = new HashMap<Node, List<Edge>>();
+
+	private Map<Node, List<Edge>> outgoingEdgesByNode = new HashMap<Node, List<Edge>>();
+
 	public DirectedGraph(Node[] nodes) {
 		for (Node node : nodes) {
 			addNode(node);
 		}
 	}
 
+	public DirectedGraph(Collection<Node> nodes) {
+		this(nodes.toArray(new Node[nodes.size()]));
+	}
+
 	public void addNode(Node node) {
 		nodes.add(node);
+		incomingEdgesByNode.put(node, new ArrayList<Edge>());
+		outgoingEdgesByNode.put(node, new ArrayList<Edge>());
 	}
 
 	public void addEdge(Node sourceNode, Node targetNode) {
+		assert nodes.contains(sourceNode) && nodes.contains(targetNode) : "Nodes must be part of the graph.";
+
 		Edge edge = new Edge(sourceNode, targetNode, true);
 		edges.add(edge);
-		sourceNode.addOutgoingEdge(edge);
-		targetNode.addIncomingEdge(edge);
+		outgoingEdgesByNode.get(sourceNode).add(edge);
+		incomingEdgesByNode.get(targetNode).add(edge);
 	}
 
 	public boolean hasEdge(Node sourceNode, Node targetNode) {
-		return sourceNode.getAdjacentNodes().contains(targetNode);
+		return getAdjacentNodes(sourceNode).contains(targetNode);
 	}
 
 	public Set<Node> getNodes() {
@@ -63,13 +79,19 @@ public class DirectedGraph {
 	}
 
 	public List<Node> getAdjacentNodes(Node node) {
-		return node.getAdjacentNodes();
-	}
-
-	public void reverse() {
-		for (Edge edge : edges) {
-			edge.reverse();
+		List<Node> adjacentNodes = new ArrayList<Node>();
+		for (Edge edge : outgoingEdgesByNode.get(node)) {
+			adjacentNodes.add(edge.getAdjacentNode(node));
 		}
+		return adjacentNodes;
 	}
 
+	public DirectedGraph reversed() {
+		DirectedGraph reversedGraph = new DirectedGraph(nodes);
+		for (Edge edge : edges) {
+			reversedGraph.addEdge(edge.getTargetNode(), edge.getSourceNode());
+		}
+
+		return reversedGraph;
+	}
 }
