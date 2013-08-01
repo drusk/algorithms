@@ -21,6 +21,8 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TODO: refactor and merge with UndirectedNode.
@@ -32,6 +34,10 @@ public class Node {
 
 	private String label;
 
+	private List<Edge> incomingEdges = new ArrayList<Edge>();
+
+	private List<Edge> outgoingEdges = new ArrayList<Edge>();
+
 	public Node(String label) {
 		this.label = label;
 	}
@@ -42,6 +48,22 @@ public class Node {
 
 	public String toString() {
 		return label;
+	}
+
+	public void addIncomingEdge(Edge edge) {
+		incomingEdges.add(edge);
+	}
+
+	public void addOutgoingEdge(Edge edge) {
+		outgoingEdges.add(edge);
+	}
+
+	public List<Node> getAdjacentNodes() {
+		List<Node> adjacentNodes = new ArrayList<Node>();
+		for (Edge edge : outgoingEdges) {
+			adjacentNodes.add(edge.getAdjacentNode(this));
+		}
+		return adjacentNodes;
 	}
 
 }

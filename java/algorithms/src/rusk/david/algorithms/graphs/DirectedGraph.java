@@ -21,10 +21,8 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -35,9 +33,9 @@ import java.util.Set;
  */
 public class DirectedGraph {
 
-	private Map<Node, List<Node>> nodeAdjacencies = new HashMap<Node, List<Node>>();
+	private Set<Node> nodes = new HashSet<Node>();
 
-	private List<Edge> edges = new ArrayList<Edge>();
+	private Set<Edge> edges = new HashSet<Edge>();
 
 	public DirectedGraph(Node[] nodes) {
 		for (Node node : nodes) {
@@ -46,19 +44,22 @@ public class DirectedGraph {
 	}
 
 	public void addNode(Node node) {
-		nodeAdjacencies.put(node, new ArrayList<Node>());
+		nodes.add(node);
 	}
 
-	public void addEdge(Node node1, Node node2) {
-		nodeAdjacencies.get(node1).add(node2);
+	public void addEdge(Node sourceNode, Node targetNode) {
+		Edge edge = new Edge(sourceNode, targetNode, true);
+		edges.add(edge);
+		sourceNode.addOutgoingEdge(edge);
+		targetNode.addIncomingEdge(edge);
 	}
 
 	public Set<Node> getNodes() {
-		return nodeAdjacencies.keySet();
+		return nodes;
 	}
 
-	public List<Node> getConnectedNodes(Node node) {
-		return nodeAdjacencies.get(node);
+	public List<Node> getAdjacentNodes(Node node) {
+		return node.getAdjacentNodes();
 	}
 
 	public void reverse() {

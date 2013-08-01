@@ -23,13 +23,13 @@ package rusk.david.algorithms.graphs;
 
 public class Edge {
 
-	private UndirectedNode sourceNode;
+	private Node sourceNode;
 
-	private UndirectedNode targetNode;
+	private Node targetNode;
 
 	private boolean directed;
 
-	public Edge(UndirectedNode sourceNode, UndirectedNode targetNode, boolean directed) {
+	public Edge(Node sourceNode, Node targetNode, boolean directed) {
 		this.sourceNode = sourceNode;
 		this.targetNode = targetNode;
 		this.directed = directed;
@@ -39,10 +39,26 @@ public class Edge {
 		return directed;
 	}
 
+	public Node getAdjacentNode(Node node) {
+		if (node.equals(sourceNode)) {
+			return targetNode;
+		} else if (node.equals(targetNode)) {
+			return sourceNode;
+		} else {
+			throw new RuntimeException("Node (" + node.toString()
+					+ ") is not part of edge (" + toString() + ")");
+		}
+	}
+
 	public void reverse() {
-		UndirectedNode temp = sourceNode;
+		Node temp = sourceNode;
 		sourceNode = targetNode;
 		targetNode = temp;
+	}
+
+	@Override
+	public String toString() {
+		return sourceNode.toString() + " -> " + targetNode.toString();
 	}
 
 }

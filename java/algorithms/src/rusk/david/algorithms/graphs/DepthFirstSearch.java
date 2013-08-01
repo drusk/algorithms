@@ -60,7 +60,7 @@ public class DepthFirstSearch {
 	private void doDepthFirstSearch(DirectedGraph graph, Node startNode) {
 		markExplored(startNode);
 
-		for (Node connectedNode : graph.getConnectedNodes(startNode)) {
+		for (Node connectedNode : graph.getAdjacentNodes(startNode)) {
 			if (isUnexplored(connectedNode)) {
 				doDepthFirstSearch(graph, connectedNode);
 			}
