@@ -21,21 +21,7 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
-/**
- * TODO: get rid of the duplication here too.
- * 
- * @author drusk
- * 
- */
 public abstract class AbstractGraphTest {
-
-	protected UndirectedNode[] createUndirectedNodes(int numberOfNodes) {
-		UndirectedNode[] nodes = new UndirectedNode[numberOfNodes];
-		for (int i = 0; i < numberOfNodes; i++) {
-			nodes[i] = new UndirectedNode("" + i);
-		}
-		return nodes;
-	}
 
 	protected Node[] createNodes(int numberOfNodes) {
 		Node[] nodes = new Node[numberOfNodes];
