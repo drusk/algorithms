@@ -60,6 +60,26 @@ public abstract class Graph {
 		return getAdjacentNodes(sourceNode).contains(targetNode);
 	}
 
+	public boolean hasEdge(String sourceNodeId, String targetNodeId) {
+		Node sourceNode = null;
+		Node targetNode = null;
+
+		for (Node node : getNodes()) {
+			if (node.getId().equals(sourceNodeId)) {
+				sourceNode = node;
+			}
+			if (node.getId().equals(targetNodeId)) {
+				targetNode = node;
+			}
+		}
+
+		if (sourceNode == null || targetNode == null) {
+			return false;
+		}
+
+		return hasEdge(sourceNode, targetNode);
+	}
+
 	public Set<Node> getNodes() {
 		return nodes;
 	}
