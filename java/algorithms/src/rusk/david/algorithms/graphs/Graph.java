@@ -21,54 +21,61 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import rusk.david.algorithms.utils.IOUtils;
+public abstract class Graph {
 
-public class GraphBuilder {
+	protected Set<Node> nodes = new HashSet<Node>();
 
-	private Map<String, Node> nodesByLabel;
+	protected Set<Edge> edges = new HashSet<Edge>();
 
-	public UndirectedGraph buildFromAdjacencyLists(String path)
-			throws IOException {
-		nodesByLabel = new HashMap<String, Node>();
-
-		UndirectedGraph graph = new UndirectedGraph();
-
-		for (String line : IOUtils.readLines(path)) {
-			parseNodeAndConnections(line, graph);
-		}
-
-		return graph;
+	public Graph() {
+		this(new Node[] {});
 	}
 
-	private void parseNodeAndConnections(String line, Graph graph) {
-		String[] nodeLabels = line.split("\\s+");
+	public Graph(Node[] nodes) {
+		initializeExtraDataStructures();
 
-		assert nodeLabels.length >= 1;
-
-		Node currentNode = getOrMakeNode(nodeLabels[0], graph);
-		for (int i = 1; i < nodeLabels.length; i++) {
-			Node connectedNode = getOrMakeNode(nodeLabels[i], graph);
-			if (!graph.hasEdge(currentNode, connectedNode)) {
-				/* Don't add undirected edges twice! */
-				graph.addEdge(currentNode, connectedNode);
-			}
+		for (Node node : nodes) {
+			addNode(node);
 		}
 	}
 
-	private Node getOrMakeNode(String label, Graph graph) {
-		if (nodesByLabel.containsKey(label)) {
-			return nodesByLabel.get(label);
-		}
-
-		Node newNode = new Node(label);
-		nodesByLabel.put(label, newNode);
-		graph.addNode(newNode);
-
-		return newNode;
+	public Graph(Collection<Node> nodes) {
+		this(nodes.toArray(new Node[nodes.size()]));
 	}
+
+	protected abstract void initializeExtraDataStructures();
+
+	public void addNode(Node node) {
+		nodes.add(node);
+	}
+
+	public abstract void addEdge(Node sourceNode, Node targetNode);
+
+	public boolean hasEdge(Node sourceNode, Node targetNode) {
+		return getAdjacentNodes(sourceNode).contains(targetNode);
+	}
+
+	public Set<Node> getNodes() {
+		return nodes;
+	}
+
+	public Set<Edge> getEdges() {
+		return edges;
+	}
+
+	public int getNodeCount() {
+		return nodes.size();
+	}
+
+	public int getEdgeCount() {
+		return edges.size();
+	}
+
+	public abstract List<Node> getAdjacentNodes(Node node);
 
 }

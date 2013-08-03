@@ -35,32 +35,35 @@ import java.util.Set;
  * @author drusk
  * 
  */
-public class UndirectedGraph {
+public class UndirectedGraph extends Graph {
 
-	private Set<Node> nodes = new HashSet<Node>();
-
-	private Set<Edge> edges = new HashSet<Edge>();
-
-	private Map<Node, List<Edge>> edgesByNode = new HashMap<Node, List<Edge>>();
+	private Map<Node, List<Edge>> edgesByNode;
 
 	public UndirectedGraph() {
+		super();
 	}
 
 	public UndirectedGraph(Node[] nodes) {
-		for (Node node : nodes) {
-			addNode(node);
-		}
+		super(nodes);
 	}
 
 	public UndirectedGraph(Collection<Node> nodes) {
-		this(nodes.toArray(new Node[nodes.size()]));
+		super(nodes);
 	}
 
+	@Override
+	protected void initializeExtraDataStructures() {
+		edgesByNode = new HashMap<Node, List<Edge>>();
+	}
+
+	@Override
 	public void addNode(Node node) {
-		nodes.add(node);
+		super.addNode(node);
+
 		edgesByNode.put(node, new ArrayList<Edge>());
 	}
 
+	@Override
 	public void addEdge(Node sourceNode, Node targetNode) {
 		assert nodes.contains(sourceNode) && nodes.contains(targetNode) : "Nodes must be part of the graph.";
 
@@ -78,24 +81,13 @@ public class UndirectedGraph {
 		}
 	}
 
-	public boolean hasEdge(Node sourceNode, Node targetNode) {
-		return getAdjacentNodes(sourceNode).contains(targetNode);
-	}
-
-	public int getNodeCount() {
-		return nodes.size();
-	}
-
-	public int getEdgeCount() {
-		return edges.size();
-	}
-
-	public Set<Node> getNodes() {
-		return nodes;
-	}
-
-	public Set<Edge> getEdges() {
-		return edges;
+	@Override
+	public List<Node> getAdjacentNodes(Node node) {
+		List<Node> adjacentNodes = new ArrayList<Node>();
+		for (Edge edge : edgesByNode.get(node)) {
+			adjacentNodes.add(edge.getAdjacentNode(node));
+		}
+		return adjacentNodes;
 	}
 
 	public Node mergeNodes(Node node1, Node node2) {
@@ -132,14 +124,6 @@ public class UndirectedGraph {
 		}
 
 		return superNode;
-	}
-
-	public List<Node> getAdjacentNodes(Node node) {
-		List<Node> adjacentNodes = new ArrayList<Node>();
-		for (Edge edge : edgesByNode.get(node)) {
-			adjacentNodes.add(edge.getAdjacentNode(node));
-		}
-		return adjacentNodes;
 	}
 
 }

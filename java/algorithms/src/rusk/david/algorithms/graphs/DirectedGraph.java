@@ -24,43 +24,42 @@ package rusk.david.algorithms.graphs;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-/**
- * TODO: remove duplication with {@link UndirectedGraph}.
- * 
- * @author drusk
- * 
- */
-public class DirectedGraph {
+public class DirectedGraph extends Graph {
 
-	private Set<Node> nodes = new HashSet<Node>();
+	private Map<Node, List<Edge>> incomingEdgesByNode;
 
-	private Set<Edge> edges = new HashSet<Edge>();
+	private Map<Node, List<Edge>> outgoingEdgesByNode;
 
-	private Map<Node, List<Edge>> incomingEdgesByNode = new HashMap<Node, List<Edge>>();
-
-	private Map<Node, List<Edge>> outgoingEdgesByNode = new HashMap<Node, List<Edge>>();
+	public DirectedGraph() {
+		super();
+	}
 
 	public DirectedGraph(Node[] nodes) {
-		for (Node node : nodes) {
-			addNode(node);
-		}
+		super(nodes);
 	}
 
 	public DirectedGraph(Collection<Node> nodes) {
-		this(nodes.toArray(new Node[nodes.size()]));
+		super(nodes);
 	}
 
+	@Override
+	protected void initializeExtraDataStructures() {
+		incomingEdgesByNode = new HashMap<Node, List<Edge>>();
+		outgoingEdgesByNode = new HashMap<Node, List<Edge>>();
+	}
+
+	@Override
 	public void addNode(Node node) {
-		nodes.add(node);
+		super.addNode(node);
+
 		incomingEdgesByNode.put(node, new ArrayList<Edge>());
 		outgoingEdgesByNode.put(node, new ArrayList<Edge>());
 	}
 
+	@Override
 	public void addEdge(Node sourceNode, Node targetNode) {
 		assert nodes.contains(sourceNode) && nodes.contains(targetNode) : "Nodes must be part of the graph.";
 
@@ -70,14 +69,7 @@ public class DirectedGraph {
 		incomingEdgesByNode.get(targetNode).add(edge);
 	}
 
-	public boolean hasEdge(Node sourceNode, Node targetNode) {
-		return getAdjacentNodes(sourceNode).contains(targetNode);
-	}
-
-	public Set<Node> getNodes() {
-		return nodes;
-	}
-
+	@Override
 	public List<Node> getAdjacentNodes(Node node) {
 		List<Node> adjacentNodes = new ArrayList<Node>();
 		for (Edge edge : outgoingEdgesByNode.get(node)) {
@@ -94,4 +86,5 @@ public class DirectedGraph {
 
 		return reversedGraph;
 	}
+
 }

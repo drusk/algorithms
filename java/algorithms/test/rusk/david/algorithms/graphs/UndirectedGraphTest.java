@@ -29,7 +29,7 @@ import static org.junit.matchers.JUnitMatchers.hasItems;
 
 import org.junit.Test;
 
-public class GraphTest extends AbstractGraphTest {
+public class UndirectedGraphTest extends AbstractGraphTest {
 
 	@Test
 	public void basicGraphProperties() {
@@ -126,36 +126,6 @@ public class GraphTest extends AbstractGraphTest {
 		assertThat(graph.getNodes(), hasItems(mergedNode, nodes[2]));
 		assertTrue(graph.hasEdge(mergedNode, nodes[2]));
 		assertTrue(graph.hasEdge(nodes[2], mergedNode));
-	}
-
-	@Test
-	public void reverseLinearPath() {
-		Node nodes[] = createNodes(3);
-
-		DirectedGraph graph = new DirectedGraph(nodes);
-		graph.addEdge(nodes[0], nodes[1]);
-		graph.addEdge(nodes[1], nodes[2]);
-
-		assertTrue(graph.hasEdge(nodes[0], nodes[1]));
-		assertTrue(graph.hasEdge(nodes[1], nodes[2]));
-
-		assertFalse(graph.hasEdge(nodes[1], nodes[0]));
-		assertFalse(graph.hasEdge(nodes[2], nodes[1]));
-
-		DirectedGraph reversedGraph = graph.reversed();
-
-		assertTrue(reversedGraph.hasEdge(nodes[1], nodes[0]));
-		assertTrue(reversedGraph.hasEdge(nodes[2], nodes[1]));
-
-		assertFalse(reversedGraph.hasEdge(nodes[0], nodes[1]));
-		assertFalse(reversedGraph.hasEdge(nodes[1], nodes[2]));
-
-		// Make sure original graph is unchanged
-		assertTrue(graph.hasEdge(nodes[0], nodes[1]));
-		assertTrue(graph.hasEdge(nodes[1], nodes[2]));
-
-		assertFalse(graph.hasEdge(nodes[1], nodes[0]));
-		assertFalse(graph.hasEdge(nodes[2], nodes[1]));
 	}
 
 }

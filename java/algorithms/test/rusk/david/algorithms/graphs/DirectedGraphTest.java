@@ -21,54 +21,41 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import rusk.david.algorithms.utils.IOUtils;
+import org.junit.Test;
 
-public class GraphBuilder {
+public class DirectedGraphTest extends AbstractGraphTest {
 
-	private Map<String, Node> nodesByLabel;
+	@Test
+	public void reverseLinearPath() {
+		Node nodes[] = createNodes(3);
 
-	public UndirectedGraph buildFromAdjacencyLists(String path)
-			throws IOException {
-		nodesByLabel = new HashMap<String, Node>();
+		DirectedGraph graph = new DirectedGraph(nodes);
+		graph.addEdge(nodes[0], nodes[1]);
+		graph.addEdge(nodes[1], nodes[2]);
 
-		UndirectedGraph graph = new UndirectedGraph();
+		assertTrue(graph.hasEdge(nodes[0], nodes[1]));
+		assertTrue(graph.hasEdge(nodes[1], nodes[2]));
 
-		for (String line : IOUtils.readLines(path)) {
-			parseNodeAndConnections(line, graph);
-		}
+		assertFalse(graph.hasEdge(nodes[1], nodes[0]));
+		assertFalse(graph.hasEdge(nodes[2], nodes[1]));
 
-		return graph;
-	}
+		DirectedGraph reversedGraph = graph.reversed();
 
-	private void parseNodeAndConnections(String line, Graph graph) {
-		String[] nodeLabels = line.split("\\s+");
+		assertTrue(reversedGraph.hasEdge(nodes[1], nodes[0]));
+		assertTrue(reversedGraph.hasEdge(nodes[2], nodes[1]));
 
-		assert nodeLabels.length >= 1;
+		assertFalse(reversedGraph.hasEdge(nodes[0], nodes[1]));
+		assertFalse(reversedGraph.hasEdge(nodes[1], nodes[2]));
 
-		Node currentNode = getOrMakeNode(nodeLabels[0], graph);
-		for (int i = 1; i < nodeLabels.length; i++) {
-			Node connectedNode = getOrMakeNode(nodeLabels[i], graph);
-			if (!graph.hasEdge(currentNode, connectedNode)) {
-				/* Don't add undirected edges twice! */
-				graph.addEdge(currentNode, connectedNode);
-			}
-		}
-	}
+		// Make sure original graph is unchanged
+		assertTrue(graph.hasEdge(nodes[0], nodes[1]));
+		assertTrue(graph.hasEdge(nodes[1], nodes[2]));
 
-	private Node getOrMakeNode(String label, Graph graph) {
-		if (nodesByLabel.containsKey(label)) {
-			return nodesByLabel.get(label);
-		}
-
-		Node newNode = new Node(label);
-		nodesByLabel.put(label, newNode);
-		graph.addNode(newNode);
-
-		return newNode;
+		assertFalse(graph.hasEdge(nodes[1], nodes[0]));
+		assertFalse(graph.hasEdge(nodes[2], nodes[1]));
 	}
 
 }

@@ -45,7 +45,7 @@ public class GraphBuilderTest {
 
 	@Test
 	public void buildUndirectedGraphFromAdjacencyList() throws IOException {
-		UndirectedGraph graph = new GraphBuilder()
+		Graph graph = new GraphBuilder()
 				.buildFromAdjacencyLists(getAbsolutePath("undirected_graph_adjacency_list.txt"));
 
 		assertEquals(4, graph.getNodeCount());
