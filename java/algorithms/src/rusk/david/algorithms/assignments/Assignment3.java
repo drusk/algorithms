@@ -23,16 +23,16 @@ package rusk.david.algorithms.assignments;
 
 import java.io.IOException;
 
-import rusk.david.algorithms.graphs.UndirectedGraph;
 import rusk.david.algorithms.graphs.GraphBuilder;
 import rusk.david.algorithms.graphs.KargerMinCutAlgorithm;
-import rusk.david.algorithms.graphs.RandomNodeSelector;
+import rusk.david.algorithms.graphs.RandomEdgeSelector;
+import rusk.david.algorithms.graphs.UndirectedGraph;
 
 public class Assignment3 {
 
 	private static final String INPUT_FILE = "/home/drusk/Documents/Courses/online/algorithms1/assignments/a3/kargerMinCut.txt";
 
-	private static final int NUMBER_OF_ITERATIONS = 10000;
+	private static final int NUMBER_OF_ITERATIONS = 100;
 
 	public static void main(String[] args) throws IOException {
 		int minCut = Integer.MAX_VALUE;
@@ -50,10 +50,11 @@ public class Assignment3 {
 	}
 
 	private static int getCutSize(String inputFile) throws IOException {
-		UndirectedGraph graph = new GraphBuilder().buildFromAdjacencyLists(inputFile);
+		UndirectedGraph graph = new GraphBuilder()
+				.buildFromAdjacencyLists(inputFile);
 
 		KargerMinCutAlgorithm kargerAlgorithm = new KargerMinCutAlgorithm(
-				graph, new RandomNodeSelector());
+				graph, new RandomEdgeSelector());
 
 		return kargerAlgorithm.getMinCutSize();
 	}

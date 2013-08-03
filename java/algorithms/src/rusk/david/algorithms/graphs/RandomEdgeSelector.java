@@ -24,12 +24,12 @@ package rusk.david.algorithms.graphs;
 import java.util.Collection;
 import java.util.Random;
 
-public class RandomNodeSelector {
+public class RandomEdgeSelector {
 
 	private Random randomNumberGenerator = new Random();
 
-	public UndirectedNode selectNode(Collection<UndirectedNode> nodes) {
-		return (UndirectedNode) nodes.toArray()[randomNumberGenerator.nextInt(nodes
+	public Edge selectEdge(Collection<Edge> edges) {
+		return (Edge) edges.toArray()[randomNumberGenerator.nextInt(edges
 				.size())];
 	}
 }

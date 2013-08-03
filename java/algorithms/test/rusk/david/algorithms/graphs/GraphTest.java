@@ -33,7 +33,7 @@ public class GraphTest extends AbstractGraphTest {
 
 	@Test
 	public void basicGraphProperties() {
-		UndirectedNode[] nodes = createUndirectedNodes(3);
+		Node[] nodes = createNodes(3);
 
 		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
@@ -42,52 +42,52 @@ public class GraphTest extends AbstractGraphTest {
 		assertEquals(3, graph.getNodeCount());
 		assertEquals(2, graph.getEdgeCount());
 
-		assertTrue(nodes[0].isConnectedTo(nodes[1]));
-		assertTrue(nodes[1].isConnectedTo(nodes[0]));
-		assertTrue(nodes[1].isConnectedTo(nodes[2]));
-		assertTrue(nodes[2].isConnectedTo(nodes[1]));
-		assertFalse(nodes[0].isConnectedTo(nodes[2]));
-		assertFalse(nodes[2].isConnectedTo(nodes[0]));
+		assertTrue(graph.hasEdge(nodes[0], nodes[1]));
+		assertTrue(graph.hasEdge(nodes[1], nodes[0]));
+		assertTrue(graph.hasEdge(nodes[1], nodes[2]));
+		assertTrue(graph.hasEdge(nodes[2], nodes[1]));
+		assertFalse(graph.hasEdge(nodes[0], nodes[2]));
+		assertFalse(graph.hasEdge(nodes[2], nodes[0]));
 	}
 
 	@Test
 	public void mergeNodesWithOneEdge() {
-		UndirectedNode[] nodes = createUndirectedNodes(3);
+		Node[] nodes = createNodes(3);
 
 		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
 		graph.addEdge(nodes[1], nodes[2]);
 
-		UndirectedNode mergedNode = graph.mergeNodes(nodes[1], nodes[2]);
+		Node mergedNode = graph.mergeNodes(nodes[1], nodes[2]);
 
 		assertEquals(2, graph.getNodeCount());
 		assertEquals(1, graph.getEdgeCount());
 
 		assertThat(graph.getNodes(), hasItems(mergedNode, nodes[0]));
-		assertTrue(mergedNode.isConnectedTo(nodes[0]));
+		assertTrue(graph.hasEdge(mergedNode, nodes[0]));
 	}
 
 	@Test
 	public void mergeNodesMultipleEdgesBetweenRemaining() {
-		UndirectedNode[] nodes = createUndirectedNodes(3);
+		Node[] nodes = createNodes(3);
 
 		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
 		graph.addEdge(nodes[1], nodes[2]);
 		graph.addEdge(nodes[2], nodes[0]);
 
-		UndirectedNode mergedNode = graph.mergeNodes(nodes[1], nodes[2]);
+		Node mergedNode = graph.mergeNodes(nodes[1], nodes[2]);
 
 		assertEquals(2, graph.getNodeCount());
 		assertEquals(2, graph.getEdgeCount());
 
 		assertThat(graph.getNodes(), hasItems(mergedNode, nodes[0]));
-		assertTrue(mergedNode.isConnectedTo(nodes[0]));
+		assertTrue(graph.hasEdge(mergedNode, nodes[0]));
 	}
 
 	@Test
 	public void mergeNodesHighlyCrossConnected() {
-		UndirectedNode[] nodes = createUndirectedNodes(4);
+		Node[] nodes = createNodes(4);
 
 		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
@@ -97,20 +97,20 @@ public class GraphTest extends AbstractGraphTest {
 		graph.addEdge(nodes[0], nodes[2]);
 		graph.addEdge(nodes[1], nodes[3]);
 
-		UndirectedNode mergedNode = graph.mergeNodes(nodes[1], nodes[3]);
+		Node mergedNode = graph.mergeNodes(nodes[1], nodes[3]);
 
 		assertEquals(3, graph.getNodeCount());
 		assertEquals(5, graph.getEdgeCount());
 
 		assertThat(graph.getNodes(), hasItems(mergedNode, nodes[0], nodes[2]));
-		assertTrue(mergedNode.isConnectedTo(nodes[0]));
-		assertTrue(mergedNode.isConnectedTo(nodes[2]));
-		assertTrue(nodes[2].isConnectedTo(nodes[0]));
+		assertTrue(graph.hasEdge(mergedNode, nodes[0]));
+		assertTrue(graph.hasEdge(mergedNode, nodes[2]));
+		assertTrue(graph.hasEdge(mergedNode, nodes[0]));
 	}
 
 	@Test
 	public void mergeNodesWithMultipleEdgesToTheSameNode() {
-		UndirectedNode[] nodes = createUndirectedNodes(3);
+		Node[] nodes = createNodes(3);
 
 		UndirectedGraph graph = new UndirectedGraph(nodes);
 		graph.addEdge(nodes[0], nodes[1]);
@@ -118,14 +118,14 @@ public class GraphTest extends AbstractGraphTest {
 		graph.addEdge(nodes[1], nodes[2]);
 		graph.addEdge(nodes[1], nodes[2]);
 
-		UndirectedNode mergedNode = graph.mergeNodes(nodes[0], nodes[1]);
+		Node mergedNode = graph.mergeNodes(nodes[0], nodes[1]);
 
 		assertEquals(2, graph.getNodeCount());
 		assertEquals(2, graph.getEdgeCount());
 
 		assertThat(graph.getNodes(), hasItems(mergedNode, nodes[2]));
-		assertTrue(mergedNode.isConnectedTo(nodes[2]));
-		assertTrue(nodes[2].isConnectedTo(mergedNode));
+		assertTrue(graph.hasEdge(mergedNode, nodes[2]));
+		assertTrue(graph.hasEdge(nodes[2], mergedNode));
 	}
 
 	@Test

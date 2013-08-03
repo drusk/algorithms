@@ -21,50 +21,34 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
-public class Edge {
+import static org.junit.Assert.assertEquals;
 
-	private Node sourceNode;
+import java.io.File;
+import java.io.IOException;
 
-	private Node targetNode;
+import org.junit.Test;
 
-	private boolean directed;
+public class GraphBuilderTest {
 
-	public Edge(Node sourceNode, Node targetNode, boolean directed) {
-		this.sourceNode = sourceNode;
-		this.targetNode = targetNode;
-		this.directed = directed;
+	private static final String testDir = "test/rusk/david/algorithms/graphs";
+
+	private String getProjectBasePath() {
+		String testAbsolutePath = new File("test.txt").getAbsolutePath();
+		return testAbsolutePath.substring(0,
+				testAbsolutePath.lastIndexOf(File.separator));
 	}
 
-	public Node getTargetNode() {
-		return targetNode;
+	private String getAbsolutePath(String relativePath) {
+		return getProjectBasePath() + File.separator + testDir + File.separator
+				+ relativePath;
 	}
 
-	public Node getSourceNode() {
-		return sourceNode;
-	}
+	@Test
+	public void buildUndirectedGraphFromAdjacencyList() throws IOException {
+		UndirectedGraph graph = new GraphBuilder()
+				.buildFromAdjacencyLists(getAbsolutePath("undirected_graph_adjacency_list.txt"));
 
-	public boolean isDirected() {
-		return directed;
+		assertEquals(4, graph.getNodeCount());
+		assertEquals(6, graph.getEdgeCount());
 	}
-
-	public Node getAdjacentNode(Node node) {
-		if (node.equals(sourceNode)) {
-			return targetNode;
-		} else if (node.equals(targetNode)) {
-			return sourceNode;
-		} else {
-			throw new RuntimeException("Node (" + node.toString()
-					+ ") is not part of edge (" + toString() + ")");
-		}
-	}
-
-	public boolean isConnectedTo(Node node) {
-		return node.equals(sourceNode) || node.equals(targetNode);
-	}
-
-	@Override
-	public String toString() {
-		return sourceNode.toString() + " -> " + targetNode.toString();
-	}
-
 }

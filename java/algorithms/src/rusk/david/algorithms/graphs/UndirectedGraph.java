@@ -21,8 +21,12 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,25 +37,49 @@ import java.util.Set;
  */
 public class UndirectedGraph {
 
-	private Set<UndirectedNode> nodes = new HashSet<UndirectedNode>();
+	private Set<Node> nodes = new HashSet<Node>();
 
-	public UndirectedGraph(UndirectedNode[] nodes) {
-		for (UndirectedNode node : nodes) {
+	private Set<Edge> edges = new HashSet<Edge>();
+
+	private Map<Node, List<Edge>> edgesByNode = new HashMap<Node, List<Edge>>();
+
+	public UndirectedGraph() {
+	}
+
+	public UndirectedGraph(Node[] nodes) {
+		for (Node node : nodes) {
 			addNode(node);
 		}
 	}
 
-	public UndirectedGraph(Collection<UndirectedNode> nodes) {
-		this(nodes.toArray(new UndirectedNode[nodes.size()]));
+	public UndirectedGraph(Collection<Node> nodes) {
+		this(nodes.toArray(new Node[nodes.size()]));
 	}
 
-	public void addNode(UndirectedNode node) {
+	public void addNode(Node node) {
 		nodes.add(node);
+		edgesByNode.put(node, new ArrayList<Edge>());
 	}
 
-	public void addEdge(UndirectedNode node1, UndirectedNode node2) {
-		node1.addConnectedNode(node2);
-		node2.addConnectedNode(node1);
+	public void addEdge(Node sourceNode, Node targetNode) {
+		assert nodes.contains(sourceNode) && nodes.contains(targetNode) : "Nodes must be part of the graph.";
+
+		Edge edge = new Edge(sourceNode, targetNode, false);
+		edges.add(edge);
+		edgesByNode.get(sourceNode).add(edge);
+		edgesByNode.get(targetNode).add(edge);
+	}
+
+	public void removeEdge(Edge edge) {
+		edges.remove(edge);
+
+		for (List<Edge> edgeList : edgesByNode.values()) {
+			edgeList.remove(edge);
+		}
+	}
+
+	public boolean hasEdge(Node sourceNode, Node targetNode) {
+		return getAdjacentNodes(sourceNode).contains(targetNode);
 	}
 
 	public int getNodeCount() {
@@ -59,44 +87,59 @@ public class UndirectedGraph {
 	}
 
 	public int getEdgeCount() {
-		int endCount = 0;
-		for (UndirectedNode node : nodes) {
-			endCount += node.getEdgeCount();
-		}
-		return endCount / 2;
+		return edges.size();
 	}
 
-	public Set<UndirectedNode> getNodes() {
+	public Set<Node> getNodes() {
 		return nodes;
 	}
 
-	public UndirectedNode mergeNodes(UndirectedNode node1, UndirectedNode node2) {
+	public Set<Edge> getEdges() {
+		return edges;
+	}
+
+	public Node mergeNodes(Node node1, Node node2) {
+		Node superNode = new Node(node1.getId() + "-" + node2.getId());
+		addNode(superNode);
+
+		List<Node> connectedNodes = new ArrayList<Node>();
+		for (Node node : getAdjacentNodes(node1)) {
+			if (!node.equals(node1) && !node.equals(node2)) {
+				connectedNodes.add(node);
+			}
+		}
+		for (Node node : getAdjacentNodes(node2)) {
+			if (!node.equals(node1) && !node.equals(node2)) {
+				connectedNodes.add(node);
+			}
+		}
+
+		Set<Edge> edgesToDelete = new HashSet<Edge>();
+		edgesToDelete.addAll(edgesByNode.get(node1));
+		edgesToDelete.addAll(edgesByNode.get(node2));
+
 		nodes.remove(node1);
 		nodes.remove(node2);
+		edgesByNode.remove(node1);
+		edgesByNode.remove(node2);
 
-		UndirectedNode superNode = new UndirectedNode(node1.getLabel() + "-" + node2.getLabel());
+		for (Edge edge : edgesToDelete) {
+			removeEdge(edge);
+		}
 
-		superNode.addConnectedNodes(node1.getConnectedNodes());
-		superNode.addConnectedNodes(node2.getConnectedNodes());
-
-		superNode.removeAllConnectionsTo(node1);
-		superNode.removeAllConnectionsTo(node2);
-
-		replaceNodeInEdges(node1, superNode);
-		replaceNodeInEdges(node2, superNode);
-
-		addNode(superNode);
+		for (Node connectedNode : connectedNodes) {
+			addEdge(superNode, connectedNode);
+		}
 
 		return superNode;
 	}
 
-	private void replaceNodeInEdges(UndirectedNode originalNode, UndirectedNode newNode) {
-		for (UndirectedNode connectedNode : originalNode.getConnectedNodes()) {
-			int connections = connectedNode
-					.removeAllConnectionsTo(originalNode);
-			for (int i = 0; i < connections; i++) {
-				connectedNode.addConnectedNode(newNode);
-			}
+	public List<Node> getAdjacentNodes(Node node) {
+		List<Node> adjacentNodes = new ArrayList<Node>();
+		for (Edge edge : edgesByNode.get(node)) {
+			adjacentNodes.add(edge.getAdjacentNode(node));
 		}
+		return adjacentNodes;
 	}
+
 }

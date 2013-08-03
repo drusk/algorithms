@@ -29,38 +29,44 @@ import rusk.david.algorithms.utils.IOUtils;
 
 public class GraphBuilder {
 
-	private Map<String, UndirectedNode> nodesByLabel;
+	private Map<String, Node> nodesByLabel;
 
-	public UndirectedGraph buildFromAdjacencyLists(String path) throws IOException {
-		nodesByLabel = new HashMap<String, UndirectedNode>();
+	public UndirectedGraph buildFromAdjacencyLists(String path)
+			throws IOException {
+		nodesByLabel = new HashMap<String, Node>();
+
+		UndirectedGraph graph = new UndirectedGraph();
 
 		for (String line : IOUtils.readLines(path)) {
-			parseNodeAndConnections(line);
+			parseNodeAndConnections(line, graph);
 		}
 
-		return new UndirectedGraph(nodesByLabel.values());
+		return graph;
 	}
 
-	private void parseNodeAndConnections(String line) {
+	private void parseNodeAndConnections(String line, UndirectedGraph graph) {
 		String[] nodeLabels = line.split("\\s+");
 
 		assert nodeLabels.length >= 1;
 
-		UndirectedNode currentNode = getOrMakeNode(nodeLabels[0]);
-
+		Node currentNode = getOrMakeNode(nodeLabels[0], graph);
 		for (int i = 1; i < nodeLabels.length; i++) {
-			UndirectedNode connectedNode = getOrMakeNode(nodeLabels[i]);
-			currentNode.addConnectedNode(connectedNode);
+			Node connectedNode = getOrMakeNode(nodeLabels[i], graph);
+			if (!graph.hasEdge(currentNode, connectedNode)) {
+				/* Don't add undirected edges twice! */
+				graph.addEdge(currentNode, connectedNode);
+			}
 		}
 	}
 
-	private UndirectedNode getOrMakeNode(String label) {
+	private Node getOrMakeNode(String label, UndirectedGraph graph) {
 		if (nodesByLabel.containsKey(label)) {
 			return nodesByLabel.get(label);
 		}
 
-		UndirectedNode newNode = new UndirectedNode(label);
+		Node newNode = new Node(label);
 		nodesByLabel.put(label, newNode);
+		graph.addNode(newNode);
 
 		return newNode;
 	}

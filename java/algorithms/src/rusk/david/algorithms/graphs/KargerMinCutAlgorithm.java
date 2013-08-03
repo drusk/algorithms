@@ -21,7 +21,6 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
-
 /**
  * A randomized algorithm to compute the minimum cut of a connected graph
  * (http://en.wikipedia.org/wiki/Karger%27s_algorithm).
@@ -33,7 +32,7 @@ public class KargerMinCutAlgorithm {
 
 	private UndirectedGraph graph;
 
-	private RandomNodeSelector randomNodeSelector;
+	private RandomEdgeSelector randomEdgeSelector;
 
 	/**
 	 * 
@@ -41,9 +40,9 @@ public class KargerMinCutAlgorithm {
 	 *            the graph to perform the min cut on.
 	 */
 	public KargerMinCutAlgorithm(UndirectedGraph graph,
-			RandomNodeSelector randomNodeSelector) {
+			RandomEdgeSelector randomNodeSelector) {
 		this.graph = graph;
-		this.randomNodeSelector = randomNodeSelector;
+		this.randomEdgeSelector = randomNodeSelector;
 	}
 
 	/**
@@ -63,14 +62,9 @@ public class KargerMinCutAlgorithm {
 	 * Picks a remaining edge and merges the attached nodes.
 	 */
 	private void contractGraph() {
-		/*
-		 * Randomly choose two connected nodes to merge (i.e. an edge to
-		 * contract).
-		 */
-		UndirectedNode node1 = randomNodeSelector.selectNode(graph.getNodes());
-		UndirectedNode node2 = randomNodeSelector.selectNode(node1.getConnectedNodes());
+		Edge edge = randomEdgeSelector.selectEdge(graph.getEdges());
 
-		graph.mergeNodes(node1, node2);
+		graph.mergeNodes(edge.getSourceNode(), edge.getTargetNode());
 	}
 
 }
