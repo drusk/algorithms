@@ -32,6 +32,8 @@ public class DepthFirstSearch {
 
 	private List<Node> traversalOrder = new ArrayList<Node>();
 
+	private List<Node> finishOrder = new ArrayList<Node>();
+
 	/**
 	 * Performs depth first search on a graph.
 	 * 
@@ -65,6 +67,8 @@ public class DepthFirstSearch {
 				doDepthFirstSearch(graph, connectedNode);
 			}
 		}
+
+		finishOrder.add(startNode);
 	}
 
 	/**
@@ -74,6 +78,15 @@ public class DepthFirstSearch {
 	 */
 	public List<Node> getTraversalOrder() {
 		return traversalOrder;
+	}
+
+	/**
+	 * 
+	 * @return A list of nodes in the order they were finished being explored
+	 *         (including all of their descendants).
+	 */
+	public List<Node> getFinishOrder() {
+		return finishOrder;
 	}
 
 }

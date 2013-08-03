@@ -73,4 +73,36 @@ public class DepthFirstSearchTest extends AbstractGraphTest {
 						nodes[2] }), depthFirstSearch.getTraversalOrder());
 	}
 
+	@Test
+	public void finishTimesThreeLinearNodes() {
+		Node[] nodes = createNodes(3);
+
+		DirectedGraph graph = new DirectedGraph(nodes);
+		graph.addEdge(nodes[0], nodes[1]);
+		graph.addEdge(nodes[1], nodes[2]);
+
+		DepthFirstSearch depthFirstSearch = new DepthFirstSearch(graph,
+				nodes[0]);
+		assertEquals(
+				Arrays.asList(new Node[] { nodes[2], nodes[1], nodes[0] }),
+				depthFirstSearch.getFinishOrder());
+	}
+
+	@Test
+	public void finishTimesFourNodesWithBranch() {
+		Node[] nodes = createNodes(4);
+
+		DirectedGraph graph = new DirectedGraph(nodes);
+		graph.addEdge(nodes[0], nodes[1]);
+		graph.addEdge(nodes[0], nodes[2]);
+		graph.addEdge(nodes[1], nodes[3]);
+		graph.addEdge(nodes[2], nodes[3]);
+
+		DepthFirstSearch depthFirstSearch = new DepthFirstSearch(graph,
+				nodes[0]);
+		assertEquals(
+				Arrays.asList(new Node[] { nodes[3], nodes[1], nodes[2],
+						nodes[0] }), depthFirstSearch.getFinishOrder());
+	}
+
 }
