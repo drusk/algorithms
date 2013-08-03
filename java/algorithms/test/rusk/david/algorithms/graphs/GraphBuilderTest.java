@@ -24,30 +24,19 @@ package rusk.david.algorithms.graphs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
 
+import rusk.david.algorithms.utils.TestUtils;
+
 public class GraphBuilderTest {
-
-	private static final String testDir = "test/rusk/david/algorithms/graphs";
-
-	private String getProjectBasePath() {
-		String testAbsolutePath = new File("test.txt").getAbsolutePath();
-		return testAbsolutePath.substring(0,
-				testAbsolutePath.lastIndexOf(File.separator));
-	}
-
-	private String getAbsolutePath(String relativePath) {
-		return getProjectBasePath() + File.separator + testDir + File.separator
-				+ relativePath;
-	}
 
 	@Test
 	public void buildUndirectedGraphFromAdjacencyList() throws IOException {
 		Graph graph = new GraphBuilder()
-				.buildUndirectedFromAdjacencyLists(getAbsolutePath("undirected_graph_adjacency_list.txt"));
+				.buildUndirectedFromAdjacencyLists(TestUtils
+						.getAbsolutePath("undirected_graph_adjacency_list.txt"));
 
 		assertEquals(4, graph.getNodeCount());
 		assertEquals(6, graph.getEdgeCount());
@@ -56,7 +45,25 @@ public class GraphBuilderTest {
 	@Test
 	public void buildDirectedGraphFromAdjacencyList() throws IOException {
 		Graph graph = new GraphBuilder()
-				.buildUndirectedFromAdjacencyLists(getAbsolutePath("directed_graph_adjacency_list.txt"));
+				.buildUndirectedFromAdjacencyLists(TestUtils
+						.getAbsolutePath("directed_graph_adjacency_list.txt"));
+
+		assertEquals(4, graph.getNodeCount());
+		assertEquals(5, graph.getEdgeCount());
+
+		assertTrue(graph.hasEdge("1", "2"));
+		assertTrue(graph.hasEdge("1", "3"));
+		assertTrue(graph.hasEdge("2", "3"));
+		assertTrue(graph.hasEdge("2", "4"));
+		assertTrue(graph.hasEdge("3", "4"));
+	}
+
+	@Test
+	public void buildDirectedGraphFromAdjacencyListOneEdgePerLine()
+			throws IOException {
+		Graph graph = new GraphBuilder()
+				.buildUndirectedFromAdjacencyLists(TestUtils
+						.getAbsolutePath("directed_graph_adjacency_list2.txt"));
 
 		assertEquals(4, graph.getNodeCount());
 		assertEquals(5, graph.getEdgeCount());
