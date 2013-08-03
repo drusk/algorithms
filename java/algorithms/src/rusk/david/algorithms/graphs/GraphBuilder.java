@@ -31,17 +31,27 @@ public class GraphBuilder {
 
 	private Map<String, Node> nodesByLabel;
 
-	public UndirectedGraph buildFromAdjacencyLists(String path)
+	public UndirectedGraph buildUndirectedFromAdjacencyLists(String path)
+			throws IOException {
+		UndirectedGraph graph = new UndirectedGraph();
+		buildFromAdjacencyLists(path, graph);
+		return graph;
+	}
+
+	public DirectedGraph buildDirectedFromAdjacencyLists(String path)
+			throws IOException {
+		DirectedGraph graph = new DirectedGraph();
+		buildFromAdjacencyLists(path, graph);
+		return graph;
+	}
+
+	private void buildFromAdjacencyLists(String path, Graph graph)
 			throws IOException {
 		nodesByLabel = new HashMap<String, Node>();
-
-		UndirectedGraph graph = new UndirectedGraph();
 
 		for (String line : IOUtils.readLines(path)) {
 			parseNodeAndConnections(line, graph);
 		}
-
-		return graph;
 	}
 
 	private void parseNodeAndConnections(String line, Graph graph) {

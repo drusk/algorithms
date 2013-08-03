@@ -22,6 +22,7 @@
 package rusk.david.algorithms.graphs;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,9 +47,25 @@ public class GraphBuilderTest {
 	@Test
 	public void buildUndirectedGraphFromAdjacencyList() throws IOException {
 		Graph graph = new GraphBuilder()
-				.buildFromAdjacencyLists(getAbsolutePath("undirected_graph_adjacency_list.txt"));
+				.buildUndirectedFromAdjacencyLists(getAbsolutePath("undirected_graph_adjacency_list.txt"));
 
 		assertEquals(4, graph.getNodeCount());
 		assertEquals(6, graph.getEdgeCount());
 	}
+
+	@Test
+	public void buildDirectedGraphFromAdjacencyList() throws IOException {
+		Graph graph = new GraphBuilder()
+				.buildUndirectedFromAdjacencyLists(getAbsolutePath("directed_graph_adjacency_list.txt"));
+
+		assertEquals(4, graph.getNodeCount());
+		assertEquals(5, graph.getEdgeCount());
+
+		assertTrue(graph.hasEdge("1", "2"));
+		assertTrue(graph.hasEdge("1", "3"));
+		assertTrue(graph.hasEdge("2", "3"));
+		assertTrue(graph.hasEdge("2", "4"));
+		assertTrue(graph.hasEdge("3", "4"));
+	}
+
 }

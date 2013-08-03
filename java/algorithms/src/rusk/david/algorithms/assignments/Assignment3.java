@@ -51,7 +51,7 @@ public class Assignment3 {
 
 	private static int getCutSize(String inputFile) throws IOException {
 		UndirectedGraph graph = new GraphBuilder()
-				.buildFromAdjacencyLists(inputFile);
+				.buildUndirectedFromAdjacencyLists(inputFile);
 
 		KargerMinCutAlgorithm kargerAlgorithm = new KargerMinCutAlgorithm(
 				graph, new RandomEdgeSelector());
