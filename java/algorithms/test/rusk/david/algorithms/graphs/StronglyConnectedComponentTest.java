@@ -109,4 +109,5 @@ public class StronglyConnectedComponentTest extends AbstractGraphTest {
 		}
 		return nodeIds;
 	}
+
 }
