@@ -73,4 +73,9 @@ public class SccSizesAcceptanceTest {
 		assertThat(getSccSizes("scc_size_acceptance_test_4.txt"),
 				hasItems(6, 3, 2, 1));
 	}
+
+	@Test
+	public void acceptance5() throws IOException {
+		assertThat(getSccSizes("scc_size_acceptance_test_5.txt"), hasItems(3));
+	}
 }
