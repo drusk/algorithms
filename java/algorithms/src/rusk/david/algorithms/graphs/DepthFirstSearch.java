@@ -21,19 +21,20 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Deque;
 import java.util.List;
-import java.util.Map;
+import java.util.Stack;
 
 public class DepthFirstSearch {
-
-	private Map<Node, Boolean> explored = new HashMap<Node, Boolean>();
 
 	private List<Node> traversalOrder = new ArrayList<Node>();
 
 	private List<Node> finishOrder = new ArrayList<Node>();
 
+//	private List<Node> previouslyExplored;
+	
 	/**
 	 * Performs depth first search on a graph.
 	 * 
@@ -43,13 +44,8 @@ public class DepthFirstSearch {
 	 *            The node to start the search from.
 	 */
 	public DepthFirstSearch(DirectedGraph graph, Node startNode) {
-		assert graph.getNodes().contains(startNode) : "Graph must contain start node.";
-
-		for (Node node : graph.getNodes()) {
-			explored.put(node, false);
-		}
-
-		doDepthFirstSearch(graph, startNode);
+//		this(graph, startNode, new ArrayList<Node>());
+		doIterativeDepthFirstSearch(graph, startNode);
 	}
 
 	/**
@@ -60,44 +56,82 @@ public class DepthFirstSearch {
 	 *            The graph to be searched.
 	 * @param startNode
 	 *            The node to start the search from.
-	 * @param alreadyExplored
+	 * @param previouslyExplored
 	 *            Nodes which should be considered explored right from the start
 	 *            of the search.
 	 */
-	public DepthFirstSearch(DirectedGraph graph, Node startNode,
-			List<Node> alreadyExplored) {
-		assert graph.getNodes().contains(startNode) : "Graph must contain start node.";
-
-		for (Node node : graph.getNodes()) {
-			if (alreadyExplored.contains(node)) {
-				explored.put(node, true);
-			} else {
-				explored.put(node, false);
-			}
-		}
-
-		doDepthFirstSearch(graph, startNode);
-	}
+//	public DepthFirstSearch(DirectedGraph graph, Node startNode,
+//			List<Node> previouslyExplored) {
+//		assert !previouslyExplored.contains(startNode) : "Start node was previously explored.";
+//		
+//		this.previouslyExplored = previouslyExplored;
+//		doIterativeDepthFirstSearch(graph, startNode);
+//	}
 
 	private void markExplored(Node node) {
-		explored.put(node, true);
+		assert !traversalOrder.contains(node): "Cannot traverse node multiple times.";
 		traversalOrder.add(node);
+		node.setExplored(true);
+	}
+	
+	private void markFinished(Node node) {
+		if (!node.isExplored()) {
+			throw new RuntimeException("Node " + node.toString() + " must be explored before it can be finished.");
+		}
+		if (finishOrder.contains(node)) {
+			System.out.println("Traversal order: " + traversalOrder);
+//			System.out.println("Previously explored: " + previouslyExplored);
+//			System.out.println("Node is unexplored: " + isUnexplored(node));
+			throw new RuntimeException("Cannot finish node " + node.toString() + " multiple times: " + finishOrder);
+		}
+//		assert !finishOrder.contains(node): "Cannot finish node multiple times.";
+		node.setFinished(true);
+		finishOrder.add(node);
 	}
 
-	private boolean isUnexplored(Node node) {
-		return !explored.get(node);
-	}
+//	private boolean isUnexplored(Node node) {
+//		return !previouslyExplored.contains(node) && !traversalOrder.contains(node);
+//	}
 
-	private void doDepthFirstSearch(DirectedGraph graph, Node startNode) {
+	private void doRecursiveDepthFirstSearch(DirectedGraph graph, Node startNode) {
+		assert graph.getNodes().contains(startNode) : "Graph must contain start node.";
+		
 		markExplored(startNode);
 
 		for (Node connectedNode : graph.getAdjacentNodes(startNode)) {
-			if (isUnexplored(connectedNode)) {
-				doDepthFirstSearch(graph, connectedNode);
+			if (!connectedNode.isExplored()) {
+				doRecursiveDepthFirstSearch(graph, connectedNode);
 			}
 		}
 
-		finishOrder.add(startNode);
+		markFinished(startNode);
+	}
+
+	private void doIterativeDepthFirstSearch(DirectedGraph graph, Node startNode) {
+		assert graph.getNodes().contains(startNode) : "Graph must contain start node.";
+
+		Deque<Node> nodesToVisit = new ArrayDeque<Node>(graph.getNodeCount());
+		nodesToVisit.push(startNode);
+
+		while (!nodesToVisit.isEmpty()) {
+			Node currentNode = nodesToVisit.peek();
+			if (!currentNode.isExplored()) {
+				markExplored(currentNode);
+
+				for (Node adjacentNode : graph.getAdjacentNodes(currentNode)) {
+					if (!adjacentNode.isExplored()) {
+						nodesToVisit.push(adjacentNode);
+					}
+				}
+			} else {
+				/* We have seen this node before, so it is 'finished'. */
+				Node finishedNode = nodesToVisit.pop();
+				if (!finishedNode.isFinished()) {
+					markFinished(finishedNode);
+				}
+			}
+		}
+
 	}
 
 	/**

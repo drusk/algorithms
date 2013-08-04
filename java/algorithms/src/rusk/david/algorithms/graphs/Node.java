@@ -31,6 +31,10 @@ public class Node {
 
 	private String id;
 
+	private boolean explored = false;
+	
+	private boolean finished = false;
+	
 	public Node(String id) {
 		this.id = id;
 	}
@@ -38,7 +42,23 @@ public class Node {
 	public String getId() {
 		return id;
 	}
+	
+	public boolean isExplored() {
+		return explored;
+	}
+	
+	public boolean isFinished() {
+		return finished;
+	}
 
+	public void setExplored(boolean explored) {
+		this.explored = explored;
+	}
+	
+	public void setFinished(boolean finished) {
+		this.finished = finished;
+	}
+	
 	@Override
 	public String toString() {
 		return id;

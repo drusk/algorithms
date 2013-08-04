@@ -21,7 +21,10 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+import static rusk.david.algorithms.utils.CollectionMatchers.containsExactly;
 
 import java.util.Arrays;
 
@@ -56,6 +59,7 @@ public class DepthFirstSearchTest extends AbstractGraphTest {
 		assertEquals(Arrays.asList(nodes), depthFirstSearch.getTraversalOrder());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void fourNodesWithBranch() {
 		Node[] nodes = createNodes(4);
@@ -68,9 +72,10 @@ public class DepthFirstSearchTest extends AbstractGraphTest {
 
 		DepthFirstSearch depthFirstSearch = new DepthFirstSearch(graph,
 				nodes[0]);
-		assertEquals(
-				Arrays.asList(new Node[] { nodes[0], nodes[1], nodes[3],
-						nodes[2] }), depthFirstSearch.getTraversalOrder());
+		assertThat(
+				depthFirstSearch.getTraversalOrder(),
+				anyOf(containsExactly(nodes[0], nodes[1], nodes[3], nodes[2]),
+						containsExactly(nodes[0], nodes[2], nodes[3], nodes[1])));
 	}
 
 	@Test
@@ -88,6 +93,7 @@ public class DepthFirstSearchTest extends AbstractGraphTest {
 				depthFirstSearch.getFinishOrder());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void finishTimesFourNodesWithBranch() {
 		Node[] nodes = createNodes(4);
@@ -100,9 +106,10 @@ public class DepthFirstSearchTest extends AbstractGraphTest {
 
 		DepthFirstSearch depthFirstSearch = new DepthFirstSearch(graph,
 				nodes[0]);
-		assertEquals(
-				Arrays.asList(new Node[] { nodes[3], nodes[1], nodes[2],
-						nodes[0] }), depthFirstSearch.getFinishOrder());
+		assertThat(
+				depthFirstSearch.getFinishOrder(),
+				anyOf(containsExactly(nodes[3], nodes[1], nodes[2], nodes[0]),
+						containsExactly(nodes[3], nodes[2], nodes[1], nodes[0])));
 	}
 
 }

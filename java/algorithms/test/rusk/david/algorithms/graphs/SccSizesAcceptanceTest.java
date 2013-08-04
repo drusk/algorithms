@@ -44,6 +44,7 @@ public class SccSizesAcceptanceTest {
 
 		List<Integer> sizes = new ArrayList<Integer>();
 		for (Scc scc : sccs) {
+			System.out.println(scc.toString());
 			sizes.add(scc.size());
 		}
 
@@ -52,30 +53,46 @@ public class SccSizesAcceptanceTest {
 
 	@Test
 	public void acceptance1() throws IOException {
+		for (int i = 0; i < 10000; i++) {
 		assertThat(getSccSizes("scc_size_acceptance_test_1.txt"),
 				hasItems(3, 3, 1, 1));
+		}
 	}
 
 	@Test
 	public void acceptance2() throws IOException {
+		for (int i = 0; i < 10000; i++) {
 		assertThat(getSccSizes("scc_size_acceptance_test_2.txt"),
 				hasItems(7, 1));
+		}
 	}
 
 	@Test
 	public void acceptance3() throws IOException {
+		for (int i = 0; i < 10000; i++) {
 		assertThat(getSccSizes("scc_size_acceptance_test_3.txt"),
 				hasItems(3, 2, 2, 2, 1, 1));
+		}
 	}
 
 	@Test
 	public void acceptance4() throws IOException {
+		for (int i = 0; i < 10000; i++) {
 		assertThat(getSccSizes("scc_size_acceptance_test_4.txt"),
 				hasItems(6, 3, 2, 1));
+		}
 	}
 
 	@Test
 	public void acceptance5() throws IOException {
+		for (int i = 0; i < 10000; i++) {
 		assertThat(getSccSizes("scc_size_acceptance_test_5.txt"), hasItems(3));
+		}
+	}
+
+	@Test
+	public void acceptance6() throws IOException {
+		assertThat(getSccSizes("scc_size_acceptance_test_6.txt"),
+				hasItems(36, 7, 2, 1, 1, 1, 1, 1, 1, 1, 1));
 	}
 }

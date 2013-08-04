@@ -35,6 +35,10 @@ import java.util.Map;
  */
 public class SccCalculation {
 
+	private List<Node> finishingOrder;
+
+	private Node firstNode;
+
 	private class DfsLoop {
 
 		private List<Node> finishingOrder = new ArrayList<Node>();
@@ -42,17 +46,20 @@ public class SccCalculation {
 		private Map<Node, List<Node>> nodesByLeader = new HashMap<Node, List<Node>>();
 
 		public DfsLoop(DirectedGraph graph, List<Node> nodeProcessingOrder) {
+			System.out.println("First node of DFS loop: "
+					+ nodeProcessingOrder.get(0));
 			for (Node node : nodeProcessingOrder) {
-				if (finishingOrder.contains(node)) {
+				if (node.isExplored()) {
 					// Node already explored
 					continue;
 				}
 
-				List<Node> discoveredNodes = new DepthFirstSearch(graph, node,
-						finishingOrder).getFinishOrder();
+				List<Node> discoveredNodes = new DepthFirstSearch(graph, node)
+						.getFinishOrder();
 				finishingOrder.addAll(discoveredNodes);
 
 				nodesByLeader.put(node, discoveredNodes);
+				System.out.println("Leader node: " + node);
 			}
 
 		}
@@ -69,12 +76,29 @@ public class SccCalculation {
 	private List<Scc> stronglyConnectedComponents = new ArrayList<Scc>();
 
 	public SccCalculation(DirectedGraph graph) {
-		DfsLoop firstLoop = new DfsLoop(graph.reversed(), new ArrayList<Node>(
-				graph.getNodes()));
-		List<Node> finishingOrder = firstLoop.getFinishingOrder();
+		System.out.println("Starting to reverse graph");
+		DirectedGraph reversedGraph = graph.reversed();
+		System.out.println("Finished reversing graph");
 
+		System.out.println("Starting first DFS loop");
+		ArrayList<Node> nodeProcessingOrder = new ArrayList<Node>(
+				reversedGraph.getNodes());
+		firstNode = nodeProcessingOrder.get(0);
+		DfsLoop firstLoop = new DfsLoop(reversedGraph, nodeProcessingOrder);
+		System.out.println("Finished first DFS loop");
+		List<Node> finishingOrder = firstLoop.getFinishingOrder();
+		this.finishingOrder = finishingOrder;
+
+		// Reset graph
+		for (Node node : graph.getNodes()) {
+			node.setExplored(false);
+			node.setFinished(false);
+		}
+		
 		Collections.reverse(finishingOrder);
+		System.out.println("Starting second DFS loop");
 		DfsLoop secondLoop = new DfsLoop(graph, finishingOrder);
+		System.out.println("Finished second DFS loop");
 		for (List<Node> sccNodes : secondLoop.getNodesByLeader().values()) {
 			stronglyConnectedComponents.add(new Scc(sccNodes));
 		}
@@ -82,6 +106,19 @@ public class SccCalculation {
 
 	public List<Scc> getSccs() {
 		return stronglyConnectedComponents;
+	}
+
+	public Node getFirstNode() {
+		return firstNode;
+	}
+
+	public String getFinishingOrder() {
+		return new Scc(finishingOrder).toString();
+		// ArrayList<String> nodeIds = new ArrayList<String>();
+		// for (Node node : finishingOrder) {
+		// nodeIds.add(node.getId());
+		// }
+		// return nodeIds;
 	}
 
 }

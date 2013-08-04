@@ -22,19 +22,18 @@
 package rusk.david.algorithms.assignments;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import rusk.david.algorithms.graphs.DirectedGraph;
 import rusk.david.algorithms.graphs.GraphBuilder;
 import rusk.david.algorithms.graphs.Scc;
 import rusk.david.algorithms.graphs.SccCalculation;
-import rusk.david.algorithms.sorting.QuickSort;
-import rusk.david.algorithms.sorting.RandomizedPivot;
 import rusk.david.algorithms.utils.ArrayUtils;
 
 public class Assignment4 {
 
-	private static final String INPUT_FILE = "/home/drusk/Documents/Courses/online/algorithms1/assignments/a4/SCC.txt";
+	private static final String INPUT_FILE = "/home/drusk/algorithms/SCC.txt";
 
 	public static void main(String[] args) throws IOException {
 		DirectedGraph graph = new GraphBuilder()
@@ -57,7 +56,7 @@ public class Assignment4 {
 		}
 
 		/* Sorted from smallest to largest. */
-		new QuickSort(new RandomizedPivot()).sort(sizes);
+		Arrays.sort(sizes);
 
 		int[] descendingSizes = ArrayUtils.reverse(sizes);
 
