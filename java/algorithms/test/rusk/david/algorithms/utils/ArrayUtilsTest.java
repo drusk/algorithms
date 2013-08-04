@@ -47,5 +47,13 @@ public class ArrayUtilsTest {
 
 		assertArrayEquals(source, target);
 	}
+	
+	@Test
+	public void reverse() {
+		int[] array = new int[] { 1, 2, 3 };
+		
+		int[] reversed = ArrayUtils.reverse(array);
+		assertArrayEquals(new int[] { 3, 2, 1 }, reversed);
+	}
 
 }
