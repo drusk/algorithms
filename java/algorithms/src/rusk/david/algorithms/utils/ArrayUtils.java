@@ -65,4 +65,19 @@ public class ArrayUtils {
 		}
 	}
 
+	/**
+	 * Copies the elements of the array into a new array in reversed order.
+	 * 
+	 * @param array
+	 *            The array to reverse.
+	 * @return A new, reversed array.
+	 */
+	public static int[] reverse(int[] array) {
+		int[] reversed = new int[array.length];
+		for (int i = 0; i < array.length; i++) {
+			reversed[i] = array[array.length - i];
+		}
+		return reversed;
+	}
+
 }

@@ -40,8 +40,19 @@ public class GraphBuilder {
 
 	public DirectedGraph buildDirectedFromAdjacencyLists(String path)
 			throws IOException {
+		nodesByLabel = new HashMap<String, Node>();
 		DirectedGraph graph = new DirectedGraph();
-		buildFromAdjacencyLists(path, graph);
+
+		for (String line : IOUtils.readLines(path)) {
+			String[] nodeLabels = line.split("\\s+");
+
+			assert nodeLabels.length == 2;
+			Node sourceNode = getOrMakeNode(nodeLabels[0], graph);
+			Node targetNode = getOrMakeNode(nodeLabels[1], graph);
+
+			graph.addEdge(sourceNode, targetNode);
+		}
+
 		return graph;
 	}
 
