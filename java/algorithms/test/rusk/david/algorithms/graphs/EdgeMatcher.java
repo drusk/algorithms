@@ -21,61 +21,42 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
-public class Edge {
+import org.hamcrest.Description;
+import org.junit.internal.matchers.TypeSafeMatcher;
 
-	private Node sourceNode;
+public class EdgeMatcher extends TypeSafeMatcher<Edge> {
 
-	private Node targetNode;
+	private String sourceNodeId;
 
-	private int weight;
+	private String targetNodeId;
 
 	private boolean directed;
 
-	public Edge(Node sourceNode, Node targetNode, boolean directed) {
-		this(sourceNode, targetNode, directed, 1);
-	}
+	private int weight;
 
-	public Edge(Node sourceNode, Node targetNode, boolean directed, int weight) {
-		this.sourceNode = sourceNode;
-		this.targetNode = targetNode;
+	public EdgeMatcher(String sourceNodeId, String targetNodeId,
+			boolean directed, int weight) {
+		this.sourceNodeId = sourceNodeId;
+		this.targetNodeId = targetNodeId;
 		this.directed = directed;
 		this.weight = weight;
 	}
 
-	public Node getTargetNode() {
-		return targetNode;
-	}
-
-	public Node getSourceNode() {
-		return sourceNode;
-	}
-
-	public int getWeight() {
-		return weight;
-	}
-
-	public boolean isDirected() {
-		return directed;
-	}
-
-	public Node getAdjacentNode(Node node) {
-		if (node.equals(sourceNode)) {
-			return targetNode;
-		} else if (node.equals(targetNode)) {
-			return sourceNode;
-		} else {
-			throw new RuntimeException("Node (" + node.toString()
-					+ ") is not part of edge (" + toString() + ")");
-		}
-	}
-
-	public boolean isConnectedTo(Node node) {
-		return node.equals(sourceNode) || node.equals(targetNode);
+	@Override
+	public void describeTo(Description description) {
+		description.appendText("edge from ").appendValue(sourceNodeId)
+				.appendText(" to ").appendValue(targetNodeId)
+				.appendText(" (directed=").appendValue(directed)
+				.appendText(") ").appendText(" with weight ")
+				.appendValue(weight);
 	}
 
 	@Override
-	public String toString() {
-		return sourceNode.toString() + " -> " + targetNode.toString();
+	public boolean matchesSafely(Edge actualEdge) {
+		return actualEdge.getSourceNode().getId().equals(sourceNodeId)
+				&& actualEdge.getTargetNode().getId().equals(targetNodeId)
+				&& actualEdge.isDirected() == directed
+				&& actualEdge.getWeight() == weight;
 	}
 
 }

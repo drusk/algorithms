@@ -65,9 +65,14 @@ public class UndirectedGraph extends Graph {
 
 	@Override
 	public void addEdge(Node sourceNode, Node targetNode) {
+		addEdge(sourceNode, targetNode, 1);
+	}
+
+	@Override
+	public void addEdge(Node sourceNode, Node targetNode, int weight) {
 		assert nodes.contains(sourceNode) && nodes.contains(targetNode) : "Nodes must be part of the graph.";
 
-		Edge edge = new Edge(sourceNode, targetNode, false);
+		Edge edge = new Edge(sourceNode, targetNode, false, weight);
 		edges.add(edge);
 		edgesByNode.get(sourceNode).add(edge);
 		edgesByNode.get(targetNode).add(edge);

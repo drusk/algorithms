@@ -22,7 +22,10 @@
 package rusk.david.algorithms.graphs;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.junit.matchers.JUnitMatchers.hasItems;
+import static rusk.david.algorithms.graphs.GraphMatchers.edge;
 
 import java.io.IOException;
 
@@ -75,4 +78,20 @@ public class GraphBuilderTest {
 		assertTrue(graph.hasEdge("3", "4"));
 	}
 
+	@SuppressWarnings("unchecked")
+	@Test
+	public void buildWeightedUndirectedGraphFromAdjacencyList()
+			throws IOException {
+		Graph graph = new GraphBuilder()
+				.buildWeightedUndirectedFromAdjacencyLists(TestUtils
+						.getAbsolutePath("weighted_undirected_adj_list.txt"));
+
+		assertEquals(4, graph.getNodeCount());
+		assertEquals(3, graph.getEdgeCount());
+
+		assertThat(
+				graph.getEdges(),
+				hasItems(edge("0", "1", false, 3), edge("0", "2", false, 1),
+						edge("2", "3", false, 5)));
+	}
 }

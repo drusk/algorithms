@@ -61,9 +61,14 @@ public class DirectedGraph extends Graph {
 
 	@Override
 	public void addEdge(Node sourceNode, Node targetNode) {
+		addEdge(sourceNode, targetNode, 1);
+	}
+
+	@Override
+	public void addEdge(Node sourceNode, Node targetNode, int weight) {
 		assert nodes.contains(sourceNode) && nodes.contains(targetNode) : "Nodes must be part of the graph.";
 
-		Edge edge = new Edge(sourceNode, targetNode, true);
+		Edge edge = new Edge(sourceNode, targetNode, true, weight);
 		edges.add(edge);
 		outgoingEdgesByNode.get(sourceNode).add(edge);
 		incomingEdgesByNode.get(targetNode).add(edge);

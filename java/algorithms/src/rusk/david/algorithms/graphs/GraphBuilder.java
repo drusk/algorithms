@@ -66,6 +66,30 @@ public class GraphBuilder {
 		}
 	}
 
+	private class WeightedUndirectedGraphLineParser extends LineParser {
+		@Override
+		public void parseLine(String line, Graph graph) {
+			/*
+			 * First chunk is source node id. Subsequent chunks are in the form
+			 * "targetNodeId,weight"
+			 */
+			String[] chunks = line.split("\\t");
+
+			assert chunks.length >= 1;
+
+			Node currentNode = getOrMakeNode(chunks[0], graph);
+			for (int i = 1; i < chunks.length; i++) {
+				String[] split = chunks[i].split(",");
+				Node connectedNode = getOrMakeNode(split[0], graph);
+				if (!graph.hasEdge(currentNode, connectedNode)) {
+					/* Don't add undirected edges twice! */
+					graph.addEdge(currentNode, connectedNode,
+							Integer.parseInt(split[1]));
+				}
+			}
+		}
+	}
+
 	private class DirectedGraphLineParser extends LineParser {
 		@Override
 		public void parseLine(String line, Graph graph) {
@@ -83,6 +107,14 @@ public class GraphBuilder {
 			throws IOException {
 		UndirectedGraph graph = new UndirectedGraph();
 		buildFromAdjacencyLists(path, graph, new UndirectedGraphLineParser());
+		return graph;
+	}
+
+	public UndirectedGraph buildWeightedUndirectedFromAdjacencyLists(String path)
+			throws IOException {
+		UndirectedGraph graph = new UndirectedGraph();
+		buildFromAdjacencyLists(path, graph,
+				new WeightedUndirectedGraphLineParser());
 		return graph;
 	}
 

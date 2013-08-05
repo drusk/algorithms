@@ -54,7 +54,10 @@ public abstract class Graph {
 		nodes.add(node);
 	}
 
+	/* TODO: method for adding edges just using node ids */
 	public abstract void addEdge(Node sourceNode, Node targetNode);
+
+	public abstract void addEdge(Node sourceNode, Node targetNode, int weight);
 
 	public boolean hasEdge(Node sourceNode, Node targetNode) {
 		return getAdjacentNodes(sourceNode).contains(targetNode);
