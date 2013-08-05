@@ -23,19 +23,24 @@ package rusk.david.algorithms.utils;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
 import org.hamcrest.Matcher;
 
-public final class CollectionMatchers {
+public final class CustomMatchers {
 
-    public static <T> Matcher<Iterable<T>> containsExactly(
-            Collection<T> expected) {
+	public static <T> Matcher<Iterable<T>> containsExactly(
+			Collection<T> expected) {
 
-        return new IterableContentMatcher<T, Iterable<T>>(expected);
-    }
-	
-    public static <T> Matcher<Iterable<T>> containsExactly(T... expected) {
-        return CollectionMatchers.<T> containsExactly(Arrays.asList(expected));
-    }
-    
+		return new IterableContentMatcher<T, Iterable<T>>(expected);
+	}
+
+	public static <T> Matcher<Iterable<T>> containsExactly(T... expected) {
+		return CustomMatchers.<T> containsExactly(Arrays.asList(expected));
+	}
+
+	public static <T, S> MapMatcher<T, S> equalsMap(Map<T, S> expectedMap) {
+		return new MapMatcher<T, S>(expectedMap);
+	}
+
 }

@@ -23,7 +23,7 @@ package rusk.david.algorithms.graphs;
 
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.junit.Assert.assertThat;
-import static rusk.david.algorithms.utils.CollectionMatchers.containsExactly;
+import static rusk.david.algorithms.utils.CustomMatchers.containsExactly;
 
 import org.junit.Test;
 
