@@ -50,8 +50,10 @@ public class DepthFirstSearch {
 	}
 
 	private void markFinished(Node node) {
-		node.setFinished(true);
-		finishOrder.add(node);
+		if (!node.isFinished()) {
+			node.setFinished(true);
+			finishOrder.add(node);
+		}
 	}
 
 	private void doRecursiveDepthFirstSearch(DirectedGraph graph, Node startNode) {
@@ -87,9 +89,7 @@ public class DepthFirstSearch {
 			} else {
 				/* We have seen this node before, so it is 'finished'. */
 				Node finishedNode = nodesToVisit.pop();
-				if (!finishedNode.isFinished()) {
-					markFinished(finishedNode);
-				}
+				markFinished(finishedNode);
 			}
 		}
 
