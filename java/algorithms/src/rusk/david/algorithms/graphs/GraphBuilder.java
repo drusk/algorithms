@@ -29,21 +29,46 @@ import rusk.david.algorithms.utils.IOUtils;
 
 public class GraphBuilder {
 
-	private Map<String, Node> nodesByLabel;
+	private abstract class LineParser {
 
-	public UndirectedGraph buildUndirectedFromAdjacencyLists(String path)
-			throws IOException {
-		UndirectedGraph graph = new UndirectedGraph();
-		buildFromAdjacencyLists(path, graph);
-		return graph;
+		protected Map<String, Node> nodesByLabel = new HashMap<String, Node>();
+
+		protected Node getOrMakeNode(String label, Graph graph) {
+			if (nodesByLabel.containsKey(label)) {
+				return nodesByLabel.get(label);
+			}
+
+			Node newNode = new Node(label);
+			nodesByLabel.put(label, newNode);
+			graph.addNode(newNode);
+
+			return newNode;
+		}
+
+		public abstract void parseLine(String line, Graph graph);
 	}
 
-	public DirectedGraph buildDirectedFromAdjacencyLists(String path)
-			throws IOException {
-		nodesByLabel = new HashMap<String, Node>();
-		DirectedGraph graph = new DirectedGraph();
+	private class UndirectedGraphLineParser extends LineParser {
+		@Override
+		public void parseLine(String line, Graph graph) {
+			String[] nodeLabels = line.split("\\s+");
 
-		for (String line : IOUtils.readLines(path)) {
+			assert nodeLabels.length >= 1;
+
+			Node currentNode = getOrMakeNode(nodeLabels[0], graph);
+			for (int i = 1; i < nodeLabels.length; i++) {
+				Node connectedNode = getOrMakeNode(nodeLabels[i], graph);
+				if (!graph.hasEdge(currentNode, connectedNode)) {
+					/* Don't add undirected edges twice! */
+					graph.addEdge(currentNode, connectedNode);
+				}
+			}
+		}
+	}
+
+	private class DirectedGraphLineParser extends LineParser {
+		@Override
+		public void parseLine(String line, Graph graph) {
 			String[] nodeLabels = line.split("\\s+");
 
 			assert nodeLabels.length == 2;
@@ -52,44 +77,27 @@ public class GraphBuilder {
 
 			graph.addEdge(sourceNode, targetNode);
 		}
+	}
 
+	public UndirectedGraph buildUndirectedFromAdjacencyLists(String path)
+			throws IOException {
+		UndirectedGraph graph = new UndirectedGraph();
+		buildFromAdjacencyLists(path, graph, new UndirectedGraphLineParser());
 		return graph;
 	}
 
-	private void buildFromAdjacencyLists(String path, Graph graph)
+	public DirectedGraph buildDirectedFromAdjacencyLists(String path)
 			throws IOException {
-		nodesByLabel = new HashMap<String, Node>();
+		DirectedGraph graph = new DirectedGraph();
+		buildFromAdjacencyLists(path, graph, new DirectedGraphLineParser());
+		return graph;
+	}
 
+	private void buildFromAdjacencyLists(String path, Graph graph,
+			LineParser lineParser) throws IOException {
 		for (String line : IOUtils.readLines(path)) {
-			parseNodeAndConnections(line, graph);
+			lineParser.parseLine(line, graph);
 		}
-	}
-
-	private void parseNodeAndConnections(String line, Graph graph) {
-		String[] nodeLabels = line.split("\\s+");
-
-		assert nodeLabels.length >= 1;
-
-		Node currentNode = getOrMakeNode(nodeLabels[0], graph);
-		for (int i = 1; i < nodeLabels.length; i++) {
-			Node connectedNode = getOrMakeNode(nodeLabels[i], graph);
-			if (!graph.hasEdge(currentNode, connectedNode)) {
-				/* Don't add undirected edges twice! */
-				graph.addEdge(currentNode, connectedNode);
-			}
-		}
-	}
-
-	private Node getOrMakeNode(String label, Graph graph) {
-		if (nodesByLabel.containsKey(label)) {
-			return nodesByLabel.get(label);
-		}
-
-		Node newNode = new Node(label);
-		nodesByLabel.put(label, newNode);
-		graph.addNode(newNode);
-
-		return newNode;
 	}
 
 }
