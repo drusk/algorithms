@@ -35,10 +35,6 @@ import java.util.Map;
  */
 public class SccCalculation {
 
-	private List<Node> finishingOrder;
-
-	private Node firstNode;
-
 	private class DfsLoop {
 
 		private List<Node> finishingOrder = new ArrayList<Node>();
@@ -46,8 +42,6 @@ public class SccCalculation {
 		private Map<Node, List<Node>> nodesByLeader = new HashMap<Node, List<Node>>();
 
 		public DfsLoop(DirectedGraph graph, List<Node> nodeProcessingOrder) {
-			System.out.println("First node of DFS loop: "
-					+ nodeProcessingOrder.get(0));
 			for (Node node : nodeProcessingOrder) {
 				if (node.isExplored()) {
 					// Node already explored
@@ -59,7 +53,6 @@ public class SccCalculation {
 				finishingOrder.addAll(discoveredNodes);
 
 				nodesByLeader.put(node, discoveredNodes);
-				System.out.println("Leader node: " + node);
 			}
 
 		}
@@ -83,11 +76,10 @@ public class SccCalculation {
 		System.out.println("Starting first DFS loop");
 		ArrayList<Node> nodeProcessingOrder = new ArrayList<Node>(
 				reversedGraph.getNodes());
-		firstNode = nodeProcessingOrder.get(0);
+
 		DfsLoop firstLoop = new DfsLoop(reversedGraph, nodeProcessingOrder);
 		System.out.println("Finished first DFS loop");
 		List<Node> finishingOrder = firstLoop.getFinishingOrder();
-		this.finishingOrder = finishingOrder;
 
 		// Reset graph
 		for (Node node : graph.getNodes()) {
@@ -108,17 +100,17 @@ public class SccCalculation {
 		return stronglyConnectedComponents;
 	}
 
-	public Node getFirstNode() {
-		return firstNode;
-	}
-
-	public String getFinishingOrder() {
-		return new Scc(finishingOrder).toString();
-		// ArrayList<String> nodeIds = new ArrayList<String>();
-		// for (Node node : finishingOrder) {
-		// nodeIds.add(node.getId());
-		// }
-		// return nodeIds;
-	}
+//	public Node getFirstNode() {
+//		return firstNode;
+//	}
+//
+//	public String getFinishingOrder() {
+//		return new Scc(finishingOrder).toString();
+//		// ArrayList<String> nodeIds = new ArrayList<String>();
+//		// for (Node node : finishingOrder) {
+//		// nodeIds.add(node.getId());
+//		// }
+//		// return nodeIds;
+//	}
 
 }

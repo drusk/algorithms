@@ -25,7 +25,6 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
 
 public class DepthFirstSearch {
 
@@ -33,8 +32,6 @@ public class DepthFirstSearch {
 
 	private List<Node> finishOrder = new ArrayList<Node>();
 
-//	private List<Node> previouslyExplored;
-	
 	/**
 	 * Performs depth first search on a graph.
 	 * 
@@ -44,58 +41,22 @@ public class DepthFirstSearch {
 	 *            The node to start the search from.
 	 */
 	public DepthFirstSearch(DirectedGraph graph, Node startNode) {
-//		this(graph, startNode, new ArrayList<Node>());
-		doIterativeDepthFirstSearch(graph, startNode);
+		doRecursiveDepthFirstSearch(graph, startNode);
 	}
 
-	/**
-	 * Performs depth first search on a graph, given some nodes that should
-	 * already be considered explored.
-	 * 
-	 * @param graph
-	 *            The graph to be searched.
-	 * @param startNode
-	 *            The node to start the search from.
-	 * @param previouslyExplored
-	 *            Nodes which should be considered explored right from the start
-	 *            of the search.
-	 */
-//	public DepthFirstSearch(DirectedGraph graph, Node startNode,
-//			List<Node> previouslyExplored) {
-//		assert !previouslyExplored.contains(startNode) : "Start node was previously explored.";
-//		
-//		this.previouslyExplored = previouslyExplored;
-//		doIterativeDepthFirstSearch(graph, startNode);
-//	}
-
 	private void markExplored(Node node) {
-		assert !traversalOrder.contains(node): "Cannot traverse node multiple times.";
 		traversalOrder.add(node);
 		node.setExplored(true);
 	}
-	
+
 	private void markFinished(Node node) {
-		if (!node.isExplored()) {
-			throw new RuntimeException("Node " + node.toString() + " must be explored before it can be finished.");
-		}
-		if (finishOrder.contains(node)) {
-			System.out.println("Traversal order: " + traversalOrder);
-//			System.out.println("Previously explored: " + previouslyExplored);
-//			System.out.println("Node is unexplored: " + isUnexplored(node));
-			throw new RuntimeException("Cannot finish node " + node.toString() + " multiple times: " + finishOrder);
-		}
-//		assert !finishOrder.contains(node): "Cannot finish node multiple times.";
 		node.setFinished(true);
 		finishOrder.add(node);
 	}
 
-//	private boolean isUnexplored(Node node) {
-//		return !previouslyExplored.contains(node) && !traversalOrder.contains(node);
-//	}
-
 	private void doRecursiveDepthFirstSearch(DirectedGraph graph, Node startNode) {
 		assert graph.getNodes().contains(startNode) : "Graph must contain start node.";
-		
+
 		markExplored(startNode);
 
 		for (Node connectedNode : graph.getAdjacentNodes(startNode)) {

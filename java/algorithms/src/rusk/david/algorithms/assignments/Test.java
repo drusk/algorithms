@@ -52,14 +52,14 @@ public class Test {
 			sizes.add(scc.size());
 		}
 
-		if (sizes.size() != 4
-				|| !(sizes.contains(6) && sizes.contains(3)
-						&& sizes.contains(2) && sizes.contains(1))) {
-			badStartingNodes.add(sccCalculation.getFirstNode().getId());
-			badFinishingOrders.add(sccCalculation.getFinishingOrder());
-		} else {
-			goodStartingNodes.add(sccCalculation.getFirstNode().getId());
-		}
+//		if (sizes.size() != 4
+//				|| !(sizes.contains(6) && sizes.contains(3)
+//						&& sizes.contains(2) && sizes.contains(1))) {
+//			badStartingNodes.add(sccCalculation.getFirstNode().getId());
+//			badFinishingOrders.add(sccCalculation.getFinishingOrder());
+//		} else {
+//			goodStartingNodes.add(sccCalculation.getFirstNode().getId());
+//		}
 		
 	}
 
