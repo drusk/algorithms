@@ -21,13 +21,17 @@
  *****************************************************************************/
 package rusk.david.algorithms.graphs;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static rusk.david.algorithms.utils.CustomMatchers.equalsMap;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
+
+import rusk.david.algorithms.utils.TestUtils;
 
 public class ShortestPathsCalculatorTest extends AbstractGraphTest {
 
@@ -50,5 +54,55 @@ public class ShortestPathsCalculatorTest extends AbstractGraphTest {
 		assertThat(
 				new ShortestPathsCalculation(graph, nodes[0]).getPathLengths(),
 				equalsMap(expectedLengths));
+	}
+
+	@Test
+	public void getShortestPathLengthsUnconnectedNode() {
+		Node[] nodes = createNodes(5);
+		UndirectedGraph graph = new UndirectedGraph(nodes);
+		graph.addEdge(nodes[0], nodes[1], 1);
+		graph.addEdge(nodes[0], nodes[2], 4);
+		graph.addEdge(nodes[1], nodes[2], 2);
+		graph.addEdge(nodes[1], nodes[3], 6);
+		graph.addEdge(nodes[2], nodes[3], 3);
+
+		Map<Node, Integer> expectedLengths = new HashMap<Node, Integer>();
+		expectedLengths.put(nodes[0], 0);
+		expectedLengths.put(nodes[1], 1);
+		expectedLengths.put(nodes[2], 3);
+		expectedLengths.put(nodes[3], 6);
+		expectedLengths.put(nodes[4],
+				ShortestPathsCalculation.INFINITE_DISTANCE);
+
+		assertThat(
+				new ShortestPathsCalculation(graph, nodes[0]).getPathLengths(),
+				equalsMap(expectedLengths));
+	}
+
+	@Test
+	public void acceptanceTest1() throws IOException {
+		assertThat(getDistance("shortest_paths_1.txt", "1", "7"), equalTo(5));
+	}
+
+	@Test
+	public void acceptanceTest2() throws IOException {
+		assertThat(getDistance("shortest_paths_2.txt", "13", "5"), equalTo(26));
+	}
+
+	@Test
+	public void acceptanceTest3() throws IOException {
+		assertThat(getDistance("shortest_paths_3.txt", "28", "6"), equalTo(9));
+	}
+
+	private int getDistance(String fileName, String sourceNodeId,
+			String targetNodeId) throws IOException {
+		UndirectedGraph graph = new GraphBuilder()
+				.buildWeightedUndirectedFromAdjacencyLists(TestUtils
+						.getAbsolutePath(fileName));
+
+		Map<Node, Integer> pathLengths = new ShortestPathsCalculation(graph,
+				graph.getNode(sourceNodeId)).getPathLengths();
+
+		return pathLengths.get(graph.getNode(targetNodeId));
 	}
 }

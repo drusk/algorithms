@@ -83,6 +83,16 @@ public abstract class Graph {
 		return hasEdge(sourceNode, targetNode);
 	}
 
+	public Node getNode(String id) {
+		for (Node node : nodes) {
+			if (node.getId().equals(id)) {
+				return node;
+			}
+		}
+
+		return null;
+	}
+
 	public Set<Node> getNodes() {
 		return nodes;
 	}

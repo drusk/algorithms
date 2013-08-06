@@ -73,7 +73,7 @@ public class GraphBuilder {
 			 * First chunk is source node id. Subsequent chunks are in the form
 			 * "targetNodeId,weight"
 			 */
-			String[] chunks = line.split("\\t");
+			String[] chunks = line.split("\\s+");
 
 			assert chunks.length >= 1;
 

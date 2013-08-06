@@ -42,6 +42,8 @@ public class ShortestPathsCalculation {
 
 	private int numNodesProcessed = 0;
 
+	private boolean noFrontierEdges = false;
+
 	/**
 	 * Calculates the shortest paths from a source node to all other nodes on a
 	 * graph.
@@ -76,7 +78,7 @@ public class ShortestPathsCalculation {
 	}
 
 	private boolean allNodesProcessed() {
-		return numNodesProcessed == graph.getNodeCount();
+		return noFrontierEdges || numNodesProcessed == graph.getNodeCount();
 	}
 
 	private void markProcessed(Node node) {
@@ -88,7 +90,13 @@ public class ShortestPathsCalculation {
 		Edge minEdge = null;
 		int minDijkstraCriterion = Integer.MAX_VALUE;
 
-		for (Edge edge : getFrontierEdges()) {
+		Set<Edge> frontierEdges = getFrontierEdges();
+		if (frontierEdges.isEmpty()) {
+			noFrontierEdges = true;
+			return;
+		}
+
+		for (Edge edge : frontierEdges) {
 			int dijkstraGreedyCriterion = dijkstraGreedyCriterion(edge);
 			if (dijkstraGreedyCriterion < minDijkstraCriterion) {
 				minDijkstraCriterion = dijkstraGreedyCriterion;
@@ -98,24 +106,39 @@ public class ShortestPathsCalculation {
 
 		assert minEdge != null : "No edges to remaining nodes";
 
-		Node processedNode = minEdge.getTargetNode();
+		/* TODO refactor */
+		Node processedNode = null;
+		if (!minEdge.getTargetNode().isExplored()) {
+			processedNode = minEdge.getTargetNode();
+		} else {
+			processedNode = minEdge.getSourceNode();
+		}
 		markProcessed(processedNode);
 		shortestPathLengths.put(processedNode, minDijkstraCriterion);
 	}
 
 	private int dijkstraGreedyCriterion(Edge edge) {
-		return shortestPathLengths.get(edge.getSourceNode()) + edge.getWeight();
+		/* TODO refactor */
+		Node processedNode = null;
+		if (edge.getSourceNode().isExplored()) {
+			processedNode = edge.getSourceNode();
+		} else {
+			processedNode = edge.getTargetNode();
+		}
+		return shortestPathLengths.get(processedNode) + edge.getWeight();
 	}
 
 	private Set<Edge> getFrontierEdges() {
 		Set<Edge> frontierEdges = new HashSet<Edge>();
 		for (Edge edge : graph.getEdges()) {
-			if (edge.getSourceNode().isExplored()
-					&& !edge.getTargetNode().isExplored()) {
+			Node sourceNode = edge.getSourceNode();
+			Node targetNode = edge.getTargetNode();
+			/* TODO refactor */
+			if ((sourceNode.isExplored() && !targetNode.isExplored())
+					|| (!sourceNode.isExplored() && targetNode.isExplored())) {
 				frontierEdges.add(edge);
 			}
 		}
 		return frontierEdges;
 	}
-
 }
