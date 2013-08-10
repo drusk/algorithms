@@ -39,23 +39,23 @@ import java.util.Set;
 public class DistinctTwoSumDetector {
 
 	/* A HashSet implements the Set interface, but is backed by a hash table. */
-	private Set<Integer> hashtable = new HashSet<Integer>();
+	private Set<Long> hashtable = new HashSet<Long>();
 
-	public DistinctTwoSumDetector(int[] integers) {
-		for (int integer : integers) {
+	public DistinctTwoSumDetector(long[] integers) {
+		for (long integer : integers) {
 			hashtable.add(integer);
 		}
 	}
 
-	public DistinctTwoSumDetector(List<Integer> integers) {
-		for (Integer integer : integers) {
+	public DistinctTwoSumDetector(List<Long> integers) {
+		for (Long integer : integers) {
 			hashtable.add(integer);
 		}
 	}
 
-	public boolean hasTwoSum(int targetValue) {
-		for (Integer x : hashtable) {
-			int y = targetValue - x;
+	public boolean hasTwoSum(long targetValue) {
+		for (Long x : hashtable) {
+			long y = targetValue - x;
 			if (hashtable.contains(y) && x != y) {
 				return true;
 			}

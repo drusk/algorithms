@@ -30,15 +30,15 @@ public class DistinctTwoSumDetectorTest {
 
 	@Test
 	public void hasDistinct2SumReturnsTrue() {
-		DistinctTwoSumDetector detector = new DistinctTwoSumDetector(new int[] {
-				1, 2, 3 });
+		DistinctTwoSumDetector detector = new DistinctTwoSumDetector(
+				new long[] { 1, 2, 3 });
 		assertTrue(detector.hasTwoSum(4));
 	}
 
 	@Test
 	public void hasDuplicate2SumReturnsFalse() {
-		DistinctTwoSumDetector detector = new DistinctTwoSumDetector(new int[] {
-				2, 2, 3 });
+		DistinctTwoSumDetector detector = new DistinctTwoSumDetector(
+				new long[] { 2, 2, 3 });
 		assertFalse(detector.hasTwoSum(4));
 	}
 
